@@ -16,7 +16,10 @@ const walletBalance = document.querySelector("[data-wallet-balance]");
 const depositSuccess = document.querySelector("[data-deposit-success]");
 const successAmount = document.querySelector("[data-success-amount]");
 const successBalance = document.querySelector("[data-success-balance]");
+const promoSlides = Array.from(document.querySelectorAll(".promo-slide"));
+const promoDots = Array.from(document.querySelectorAll(".promo-dots span"));
 let walletBalanceValue = 0.5;
+let activePromo = 0;
 
 function getAmountText(card) {
   return Array.from(card.childNodes)
@@ -189,11 +192,18 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-const dots = Array.from(document.querySelectorAll(".hero-dots span"));
-let activeDot = 0;
+function showPromoSlide(index) {
+  if (!promoSlides.length) return;
+
+  activePromo = index % promoSlides.length;
+  promoSlides.forEach((slide, slideIndex) => {
+    slide.classList.toggle("active", slideIndex === activePromo);
+  });
+  promoDots.forEach((dot, dotIndex) => {
+    dot.classList.toggle("active", dotIndex === activePromo);
+  });
+}
 
 window.setInterval(() => {
-  dots[activeDot]?.classList.remove("active");
-  activeDot = (activeDot + 1) % dots.length;
-  dots[activeDot]?.classList.add("active");
-}, 1800);
+  showPromoSlide(activePromo + 1);
+}, 2800);

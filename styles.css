@@ -69,6 +69,160 @@ button:disabled {
   -webkit-user-drag: none;
 }
 
+.custom-hero-carousel {
+  position: absolute;
+  z-index: 1;
+  left: 1.7%;
+  top: 8.2%;
+  width: 96.7%;
+  height: 26.55%;
+  overflow: hidden;
+  border: 1px solid rgba(76, 117, 231, 0.72);
+  border-radius: clamp(12px, 2vw, 18px);
+  background: #020713;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 1px rgba(72, 202, 255, 0.12),
+    0 0 36px rgba(8, 124, 255, 0.2);
+}
+
+.promo-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background:
+    linear-gradient(90deg, rgba(1, 5, 14, 0.88) 0%, rgba(1, 5, 14, 0.58) 38%, rgba(1, 5, 14, 0.12) 70%),
+    var(--promo-image) center / cover no-repeat;
+  transition: opacity 0.6s ease;
+}
+
+.promo-slide.active {
+  opacity: 1;
+}
+
+.promo-slide::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 46%;
+  background: linear-gradient(0deg, rgba(2, 7, 19, 0.48), transparent);
+}
+
+.promo-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: min(64%, 560px);
+  height: 100%;
+  padding: clamp(16px, 3.5vw, 46px) clamp(18px, 4.3vw, 58px);
+  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.55);
+}
+
+.promo-copy-center {
+  width: min(68%, 620px);
+}
+
+.promo-copy span {
+  align-self: flex-start;
+  margin-bottom: clamp(6px, 1.3vw, 12px);
+  border-radius: 999px;
+  padding: clamp(4px, 0.7vw, 8px) clamp(9px, 1.8vw, 16px);
+  background: rgba(0, 210, 255, 0.16);
+  color: #39e0ff;
+  font-size: clamp(9px, 1.7vw, 16px);
+  font-weight: 950;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.promo-copy h2 {
+  max-width: 11.5em;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(20px, 4.65vw, 45px);
+  font-weight: 1000;
+  line-height: 1.03;
+  letter-spacing: 0;
+}
+
+.promo-copy p {
+  max-width: 18em;
+  margin: clamp(7px, 1.4vw, 14px) 0 0;
+  color: #e2e8ff;
+  font-size: clamp(12px, 2.3vw, 22px);
+  font-weight: 720;
+  line-height: 1.25;
+}
+
+.promo-tags,
+.promo-button {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  min-height: clamp(24px, 4.5vw, 44px);
+  margin-top: clamp(9px, 1.9vw, 20px);
+  border-radius: 999px;
+  padding: 0 clamp(12px, 2.2vw, 24px);
+  background: linear-gradient(135deg, rgba(10, 207, 255, 0.86), rgba(6, 117, 255, 0.92));
+  color: #fff;
+  font-size: clamp(10px, 1.8vw, 17px);
+  font-weight: 950;
+  box-shadow: 0 12px 28px rgba(8, 124, 255, 0.32);
+}
+
+.promo-tags {
+  gap: clamp(7px, 1.5vw, 14px);
+  background: rgba(5, 16, 36, 0.72);
+  border: 1px solid rgba(67, 219, 255, 0.36);
+}
+
+.promo-tags b {
+  width: 1px;
+  height: 1.2em;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.promo-green .promo-copy span,
+.promo-green .promo-button {
+  background: linear-gradient(135deg, #2ce99b, #079a65);
+  color: #ffffff;
+}
+
+.promo-gold .promo-copy span {
+  background: rgba(255, 203, 74, 0.18);
+  color: #ffd973;
+}
+
+.promo-teal .promo-copy span {
+  background: rgba(0, 232, 214, 0.16);
+  color: #48f0e6;
+}
+
+.promo-dots {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: clamp(10px, 1.8vw, 18px);
+  display: flex;
+  gap: clamp(7px, 1.4vw, 12px);
+  transform: translateX(-50%);
+}
+
+.promo-dots span {
+  display: block;
+  width: clamp(8px, 1.7vw, 14px);
+  height: clamp(8px, 1.7vw, 14px);
+  border-radius: 999px;
+  background: rgba(255, 184, 40, 0.34);
+}
+
+.promo-dots span.active {
+  width: clamp(30px, 5.4vw, 54px);
+  background: #ffb82c;
+}
+
 .hotspot {
   position: absolute;
   z-index: 4;
