@@ -1,3 +1,8 @@
+const walletPolishStylesheet = document.createElement("link");
+walletPolishStylesheet.rel = "stylesheet";
+walletPolishStylesheet.href = "wallet-polish.css?v=gift-popup-1";
+document.head.appendChild(walletPolishStylesheet);
+
 const body = document.body;
 const modals = document.querySelectorAll(".modal-backdrop");
 const navButtons = document.querySelectorAll("[data-nav]");
