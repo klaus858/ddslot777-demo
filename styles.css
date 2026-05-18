@@ -1,0 +1,296 @@
+:root {
+  --screen-w: 941;
+  --screen-h: 1672;
+  --ink: #f7fbff;
+  --muted: #aab5d1;
+  --cyan: #28ccff;
+  --blue: #087cff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #020713;
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.mirror-stage {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 50% 0, rgba(14, 83, 182, 0.28), transparent 42%),
+    #020713;
+}
+
+.phone-screen {
+  position: relative;
+  width: min(100vw, 941px);
+  aspect-ratio: 941 / 1672;
+  overflow: hidden;
+  background: #020713;
+}
+
+.source-screen {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.hotspot {
+  position: absolute;
+  z-index: 4;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  padding: 0;
+}
+
+.hotspot:focus-visible {
+  outline: 2px solid rgba(40, 204, 255, 0.9);
+  outline-offset: 3px;
+}
+
+.wallet-hotspot {
+  left: 42.6%;
+  top: 1.8%;
+  width: 28.4%;
+  height: 4.4%;
+}
+
+.join-hotspot {
+  left: 5.1%;
+  top: 27.6%;
+  width: 25.8%;
+  height: 4.1%;
+  border-radius: 999px;
+}
+
+.jackpot-hotspot {
+  left: 1.7%;
+  top: 49.8%;
+  width: 96.7%;
+  height: 10.2%;
+}
+
+.bonus-card-hotspot {
+  left: 1.7%;
+  top: 61.1%;
+  width: 96.7%;
+  height: 9.5%;
+}
+
+.bottom-wallet-hotspot {
+  left: 41.9%;
+  top: 92.5%;
+  width: 15%;
+  height: 6.3%;
+  border-radius: 22px;
+}
+
+.bottom-bonus-hotspot {
+  left: 63.9%;
+  top: 92.6%;
+  width: 14.7%;
+  height: 6.2%;
+}
+
+.logo-cover {
+  position: absolute;
+  z-index: 2;
+  left: 11%;
+  top: 1.65%;
+  width: 27.2%;
+  height: 4.65%;
+  background:
+    radial-gradient(circle at 0 38%, rgba(8, 38, 88, 0.76), transparent 48%),
+    linear-gradient(90deg, #020815 0%, #020815 78%, rgba(2, 8, 21, 0) 100%);
+}
+
+.xd-wordmark {
+  position: absolute;
+  z-index: 3;
+  left: 11.8%;
+  top: 2.8%;
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  color: white;
+  font-style: normal;
+  transform: skewX(-6deg);
+  pointer-events: none;
+  text-shadow: 0 0 13px rgba(0, 145, 255, 0.38);
+}
+
+.xd-wordmark strong {
+  color: #0d8fff;
+  font-size: clamp(20px, 4.7vw, 43px);
+  font-weight: 1000;
+  line-height: 1;
+}
+
+.xd-wordmark span {
+  color: white;
+  font-size: clamp(15px, 3.3vw, 30px);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.76);
+  backdrop-filter: blur(14px);
+}
+
+.modal-backdrop.is-open {
+  display: grid;
+}
+
+.modal {
+  position: relative;
+  width: min(440px, 100%);
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+  border: 1px solid rgba(80, 127, 225, 0.65);
+  border-radius: 18px;
+  padding: 28px;
+  background:
+    radial-gradient(circle at 100% 0, rgba(39, 150, 255, 0.28), transparent 36%),
+    #071226;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+}
+
+.close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+  font-size: 22px;
+}
+
+.modal-kicker {
+  color: var(--cyan);
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.modal h2 {
+  margin: 8px 0 10px;
+  font-size: 28px;
+}
+
+.modal p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.modal label {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  color: #b8c3de;
+}
+
+.modal input {
+  min-height: 48px;
+  border: 1px solid rgba(80, 127, 225, 0.5);
+  border-radius: 12px;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+}
+
+.modal-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 52px;
+  margin-top: 18px;
+  border: 0;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #0b76ff, #2ea7ff);
+  color: white;
+  font-weight: 900;
+  font-size: 20px;
+  box-shadow: 0 18px 40px rgba(17, 126, 255, 0.34);
+}
+
+.wallet-balance {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0;
+  padding: 20px;
+  border: 1px solid rgba(56, 216, 255, 0.32);
+  border-radius: 16px;
+  background: rgba(30, 140, 255, 0.12);
+}
+
+.wallet-balance span {
+  color: var(--muted);
+}
+
+.wallet-balance strong {
+  font-size: 36px;
+}
+
+.wallet-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.wallet-grid button {
+  min-height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  color: white;
+  font-weight: 800;
+}
+
+@media (min-width: 942px) {
+  .phone-screen {
+    box-shadow: 0 0 80px rgba(11, 89, 214, 0.22);
+  }
+}

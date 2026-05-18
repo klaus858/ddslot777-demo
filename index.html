@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>东哥slot Visual Mirror</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="mirror-stage" aria-label="东哥slot demo">
+      <div class="phone-screen">
+        <img class="source-screen" src="assets/xd-reference.png" alt="东哥slot casino app home screen">
+
+        <div class="logo-cover" aria-hidden="true"></div>
+        <div class="xd-wordmark" aria-hidden="true">
+          <strong>东哥</strong>
+          <span>slot</span>
+        </div>
+
+        <button class="hotspot wallet-hotspot" type="button" data-open-modal="wallet" aria-label="打开钱包"></button>
+        <button class="hotspot join-hotspot" type="button" data-open-modal="signin" aria-label="Join now"></button>
+        <button class="hotspot jackpot-hotspot" type="button" data-open-modal="wallet" aria-label="Airdrop Jackpot"></button>
+        <button class="hotspot bonus-card-hotspot" type="button" data-open-modal="bonus" aria-label="Bonus Cashback"></button>
+        <button class="hotspot bottom-wallet-hotspot" type="button" data-open-modal="wallet" aria-label="底部钱包"></button>
+        <button class="hotspot bottom-bonus-hotspot" type="button" data-open-modal="bonus" aria-label="底部 Bonus"></button>
+      </div>
+    </main>
+
+    <div class="modal-backdrop" data-modal="signin" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="signinTitle">
+        <button class="close-btn" type="button" data-close-modal aria-label="关闭">×</button>
+        <span class="modal-kicker">Demo account</span>
+        <h2 id="signinTitle">Join 东哥slot</h2>
+        <p>这是展示版账号入口。后续可以接邮箱、手机号、KYC、地理位置验证和风控审核。</p>
+        <label>
+          Email
+          <input type="email" placeholder="demo@donggeslot.com">
+        </label>
+        <label>
+          Password
+          <input type="password" placeholder="Enter password">
+        </label>
+        <button class="modal-primary" type="button" data-close-modal>Enter Demo</button>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" data-modal="wallet" aria-hidden="true">
+      <div class="modal wallet-modal" role="dialog" aria-modal="true" aria-labelledby="walletTitle">
+        <button class="close-btn" type="button" data-close-modal aria-label="关闭">×</button>
+        <span class="modal-kicker">Wallet preview</span>
+        <h2 id="walletTitle">Demo Wallet</h2>
+        <div class="wallet-balance">
+          <span>Available balance</span>
+          <strong>$0.50</strong>
+        </div>
+        <div class="wallet-grid">
+          <button type="button" disabled>Deposit</button>
+          <button type="button" disabled>Withdraw</button>
+        </div>
+        <p>真钱版本需要接支付、KYC、AML、地理围栏和审计日志。当前只做视觉展示。</p>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" data-modal="bonus" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="bonusTitle">
+        <button class="close-btn" type="button" data-close-modal aria-label="关闭">×</button>
+        <span class="modal-kicker">Cashback</span>
+        <h2 id="bonusTitle">Bonus Center</h2>
+        <p>这里可以扩展成活动后台配置：返利比例、流水要求、有效期、目标用户分层和预算上限。</p>
+        <button class="modal-primary" type="button" data-close-modal>Got it</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
