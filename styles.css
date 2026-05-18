@@ -24,8 +24,13 @@ body.modal-open {
   overflow: hidden;
 }
 
+body.wallet-open {
+  overflow: hidden;
+}
+
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -287,6 +292,537 @@ button:disabled {
   background: rgba(255, 255, 255, 0.07);
   color: white;
   font-weight: 800;
+}
+
+.wallet-page {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: none;
+  overflow: auto;
+  background: #171511;
+  color: #fff;
+}
+
+.wallet-page.is-open {
+  display: block;
+}
+
+.wallet-shell {
+  width: min(100vw, 813px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 18px 32px 70px;
+  background:
+    radial-gradient(circle at 28% 10%, rgba(150, 104, 32, 0.14), transparent 34%),
+    linear-gradient(180deg, #1d1a15 0%, #191713 100%);
+}
+
+.wallet-header {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(190, 155, 87, 0.42);
+}
+
+.wallet-header h1 {
+  margin: 0;
+  font-size: 23px;
+  font-weight: 850;
+  letter-spacing: 0;
+}
+
+.wallet-back,
+.support-btn,
+.history-btn,
+.wallet-tab,
+.bonus-step,
+.amount-card,
+.withdraw-submit {
+  border: 0;
+  color: #fff;
+}
+
+.wallet-back {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: transparent;
+}
+
+.wallet-back span {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border-left: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  transform: rotate(45deg);
+}
+
+.wallet-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.history-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 49px;
+  padding: 0 20px;
+  border-radius: 999px;
+  background: #44331c;
+  color: #ffe9bd;
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.history-icon {
+  position: relative;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  background: #f6d594;
+}
+
+.history-icon::before,
+.history-icon::after {
+  content: "";
+  position: absolute;
+  background: #44331c;
+}
+
+.history-icon::before {
+  left: 5px;
+  top: 4px;
+  width: 8px;
+  height: 2px;
+  box-shadow: 0 5px 0 #44331c;
+}
+
+.history-icon::after {
+  right: -4px;
+  bottom: -2px;
+  width: 8px;
+  height: 8px;
+  border: 2px solid #44331c;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.support-btn {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 49px;
+  border-radius: 999px;
+  background: #44331c;
+}
+
+.support-btn span {
+  position: relative;
+  width: 22px;
+  height: 18px;
+  border: 3px solid #ffe0a0;
+  border-bottom-color: transparent;
+  border-radius: 16px 16px 8px 8px;
+}
+
+.support-btn span::before,
+.support-btn span::after {
+  content: "";
+  position: absolute;
+  top: 11px;
+  width: 5px;
+  height: 12px;
+  border-radius: 4px;
+  background: #ffe0a0;
+}
+
+.support-btn span::before {
+  left: -6px;
+}
+
+.support-btn span::after {
+  right: -6px;
+}
+
+.wallet-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 26px;
+  margin: 18px 19px;
+}
+
+.wallet-tab {
+  position: relative;
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  min-height: 112px;
+  border: 1px solid rgba(181, 147, 78, 0.58);
+  border-radius: 16px;
+  background: #29231a;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.wallet-tab.active {
+  color: #2a1a05;
+  background:
+    linear-gradient(135deg, rgba(255, 239, 147, 0.96), rgba(199, 155, 53, 0.88)),
+    radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.58), transparent 36%);
+  box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.32);
+}
+
+.pig-icon {
+  position: relative;
+  width: 28px;
+  height: 22px;
+  border-radius: 12px;
+  background: currentColor;
+  color: #432915;
+}
+
+.pig-icon::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.pig-icon::after {
+  content: "$";
+  position: absolute;
+  right: -4px;
+  top: -7px;
+  display: grid;
+  place-items: center;
+  width: 12px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  font-size: 9px;
+  line-height: 1;
+}
+
+.card-icon {
+  position: relative;
+  width: 32px;
+  height: 22px;
+  border-radius: 4px;
+  background: #f5c765;
+}
+
+.card-icon::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 100%;
+  height: 4px;
+  background: #29231a;
+  opacity: 0.78;
+}
+
+.card-icon::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  bottom: -5px;
+  width: 12px;
+  height: 12px;
+  border: 3px solid #f5c765;
+  border-radius: 50%;
+}
+
+.wallet-panel {
+  display: none;
+}
+
+.wallet-panel.active {
+  display: block;
+}
+
+.deposit-card,
+.withdraw-card {
+  margin-top: 18px;
+  border: 1px solid rgba(196, 165, 98, 0.52);
+  border-radius: 18px;
+  padding: 36px 18px 16px;
+  background: #211d17;
+}
+
+.deposit-card h2,
+.withdraw-card h2 {
+  margin: 0 0 24px 10px;
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.deposit-card h2 span {
+  color: #ff3e37;
+}
+
+.bonus-feature {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  align-items: center;
+  gap: 18px;
+  margin: 0 16px 24px;
+}
+
+.safe-asset {
+  position: relative;
+  width: 72px;
+  height: 62px;
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, #ffe79c 0%, #8f561d 42%, #ffe88e 60%, #5c3212 100%);
+  box-shadow:
+    inset 0 0 12px rgba(255, 255, 255, 0.45),
+    0 10px 18px rgba(0, 0, 0, 0.38);
+  transform: perspective(80px) rotateY(-14deg);
+}
+
+.safe-asset::before,
+.safe-asset::after {
+  content: "";
+  position: absolute;
+  inset: 8px 14px;
+  border: 3px solid rgba(65, 30, 8, 0.55);
+  border-radius: 8px;
+}
+
+.safe-asset::after {
+  inset: 21px 29px;
+  border-radius: 50%;
+  background: #5a2c0e;
+}
+
+.bonus-feature h3 {
+  margin: 0 0 10px;
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.bonus-feature p {
+  margin: 0;
+  color: #ffecc2;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.bonus-feature strong {
+  margin-left: 8px;
+}
+
+.bonus-steps {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.bonus-step {
+  position: relative;
+  min-height: 108px;
+  border: 1px solid rgba(188, 155, 87, 0.56);
+  border-radius: 15px;
+  background:
+    radial-gradient(circle at 52% 34%, rgba(175, 80, 255, 0.72), transparent 25%),
+    radial-gradient(circle at 34% 47%, rgba(255, 199, 43, 0.8), transparent 22%),
+    #211d17;
+  overflow: hidden;
+}
+
+.bonus-step span {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 36px;
+  padding: 6px 8px;
+  border-radius: 0 13px 0 8px;
+  background: #f2d08e;
+  color: #4a2f16;
+  font-size: 14px;
+}
+
+.bonus-step b {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 13px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.bonus-step.active::after {
+  content: "✓";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 12px 0 13px;
+  background: #f0c261;
+  color: #39220c;
+  font-weight: 900;
+}
+
+.amount-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin: 18px 28px 0;
+  padding-top: 28px;
+  border-top: 1px solid rgba(196, 165, 98, 0.48);
+}
+
+.amount-card {
+  position: relative;
+  min-height: 81px;
+  border: 1px solid rgba(176, 143, 74, 0.62);
+  border-radius: 8px;
+  background: #29231a;
+  font-size: 22px;
+  font-weight: 650;
+}
+
+.amount-card span {
+  position: absolute;
+  right: 0;
+  top: 0;
+  min-width: 43px;
+  padding: 4px 9px 5px;
+  border-radius: 0 7px 0 5px;
+  background: #8f7a4e;
+  color: #f7d588;
+  font-size: 13px;
+}
+
+.amount-card.selected {
+  border-color: #f0c261;
+  box-shadow: 0 0 0 2px rgba(240, 194, 97, 0.3);
+}
+
+.withdraw-card {
+  margin: 36px 18px 0;
+  padding: 28px;
+}
+
+.withdraw-card p {
+  margin: 0;
+  color: #b8ab92;
+}
+
+.withdraw-card strong {
+  display: block;
+  margin: 8px 0 22px;
+  color: #f7d588;
+  font-size: 38px;
+}
+
+.withdraw-card label {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+  color: #fff0cf;
+}
+
+.withdraw-card input,
+.withdraw-card select {
+  min-height: 54px;
+  border: 1px solid rgba(176, 143, 74, 0.62);
+  border-radius: 9px;
+  padding: 0 14px;
+  background: #171511;
+  color: #fff;
+}
+
+.withdraw-submit {
+  width: 100%;
+  min-height: 54px;
+  margin-top: 22px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #ebcf79, #a47a2c);
+  color: #2a1a05;
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.withdraw-submit:disabled {
+  opacity: 0.55;
+}
+
+@media (max-width: 720px) {
+  .wallet-shell {
+    padding: 14px 16px 48px;
+  }
+
+  .wallet-header {
+    grid-template-columns: 38px 1fr auto;
+  }
+
+  .wallet-actions {
+    gap: 8px;
+  }
+
+  .history-btn {
+    min-height: 42px;
+    padding: 0 12px;
+    font-size: 15px;
+  }
+
+  .support-btn {
+    width: 48px;
+    height: 42px;
+  }
+
+  .wallet-tabs {
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .wallet-tab {
+    min-height: 96px;
+    font-size: 17px;
+  }
+
+  .deposit-card {
+    padding: 26px 14px 14px;
+  }
+
+  .bonus-feature {
+    grid-template-columns: 72px 1fr;
+    margin: 0 4px 22px;
+  }
+
+  .bonus-feature h3 {
+    font-size: 17px;
+  }
+
+  .bonus-steps {
+    gap: 8px;
+  }
+
+  .amount-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 18px 8px 0;
+  }
 }
 
 @media (min-width: 942px) {

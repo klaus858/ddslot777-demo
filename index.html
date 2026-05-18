@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>东哥slot Visual Mirror</title>
+    <title>大东slot Visual Mirror</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <main class="mirror-stage" aria-label="东哥slot demo">
+    <main class="mirror-stage" aria-label="大东slot demo">
       <div class="phone-screen">
-        <img class="source-screen" src="assets/xd-reference.png" alt="东哥slot casino app home screen">
+        <img class="source-screen" src="assets/xd-reference.png" alt="大东slot casino app home screen">
 
         <div class="logo-cover" aria-hidden="true"></div>
         <div class="xd-wordmark" aria-hidden="true">
@@ -17,20 +17,119 @@
           <span>slot</span>
         </div>
 
-        <button class="hotspot wallet-hotspot" type="button" data-open-modal="wallet" aria-label="打开钱包"></button>
+        <button class="hotspot wallet-hotspot" type="button" data-open-wallet aria-label="打开钱包"></button>
         <button class="hotspot join-hotspot" type="button" data-open-modal="signin" aria-label="Join now"></button>
-        <button class="hotspot jackpot-hotspot" type="button" data-open-modal="wallet" aria-label="Airdrop Jackpot"></button>
+        <button class="hotspot jackpot-hotspot" type="button" data-open-wallet aria-label="Airdrop Jackpot"></button>
         <button class="hotspot bonus-card-hotspot" type="button" data-open-modal="bonus" aria-label="Bonus Cashback"></button>
-        <button class="hotspot bottom-wallet-hotspot" type="button" data-open-modal="wallet" aria-label="底部钱包"></button>
+        <button class="hotspot bottom-wallet-hotspot" type="button" data-open-wallet aria-label="底部钱包"></button>
         <button class="hotspot bottom-bonus-hotspot" type="button" data-open-modal="bonus" aria-label="底部 Bonus"></button>
       </div>
     </main>
+
+    <section class="wallet-page" id="walletPage" aria-hidden="true">
+      <div class="wallet-shell">
+        <header class="wallet-header">
+          <button class="wallet-back" type="button" data-close-wallet aria-label="返回">
+            <span></span>
+          </button>
+          <h1>Wallet</h1>
+          <div class="wallet-actions">
+            <button class="history-btn" type="button">
+              <span class="history-icon"></span>
+              History
+            </button>
+            <button class="support-btn" type="button" aria-label="客服">
+              <span></span>
+            </button>
+          </div>
+        </header>
+
+        <div class="wallet-tabs" role="tablist" aria-label="Wallet actions">
+          <button class="wallet-tab active" type="button" data-wallet-tab="recharge" role="tab" aria-selected="true">
+            <span class="pig-icon"></span>
+            Recharge
+          </button>
+          <button class="wallet-tab" type="button" data-wallet-tab="withdraw" role="tab" aria-selected="false">
+            <span class="card-icon"></span>
+            Withdraw
+          </button>
+        </div>
+
+        <div class="wallet-panel active" data-wallet-panel="recharge">
+          <section class="deposit-card">
+            <h2>Deposit Bonuses <span>*</span></h2>
+            <div class="bonus-feature">
+              <div class="safe-asset" aria-hidden="true"></div>
+              <div>
+                <h3>5th Deposit Bonus 125%</h3>
+                <p>1st Deposit Rewards: <strong>30%</strong></p>
+              </div>
+            </div>
+
+            <div class="bonus-steps" aria-label="Deposit bonus steps">
+              <button class="bonus-step active" type="button">
+                <span>1st</span>
+                <b>+30%</b>
+              </button>
+              <button class="bonus-step" type="button">
+                <span>2nd</span>
+                <b>+20%</b>
+              </button>
+              <button class="bonus-step" type="button">
+                <span>3rd</span>
+                <b>+20%</b>
+              </button>
+              <button class="bonus-step" type="button">
+                <span>4th</span>
+                <b>+25%</b>
+              </button>
+              <button class="bonus-step" type="button">
+                <span>5th</span>
+                <b>+30%</b>
+              </button>
+            </div>
+          </section>
+
+          <div class="amount-grid" aria-label="Recharge amounts">
+            <button class="amount-card" type="button"><span>10%</span>$ 10,00</button>
+            <button class="amount-card" type="button"><span>10%</span>$ 20,00</button>
+            <button class="amount-card" type="button"><span>10%</span>$ 30,00</button>
+            <button class="amount-card" type="button"><span>20%</span>$ 50,00</button>
+            <button class="amount-card" type="button"><span>25%</span>$ 100,00</button>
+            <button class="amount-card" type="button"><span>25%</span>$ 200,00</button>
+            <button class="amount-card" type="button"><span>25%</span>$ 300,00</button>
+            <button class="amount-card" type="button"><span>30%</span>$ 500,00</button>
+            <button class="amount-card" type="button"><span>30%</span>$ 1,00K</button>
+          </div>
+        </div>
+
+        <div class="wallet-panel" data-wallet-panel="withdraw">
+          <section class="withdraw-card">
+            <h2>Withdraw</h2>
+            <p>Available Balance</p>
+            <strong>$0.50</strong>
+            <label>
+              Amount
+              <input type="text" inputmode="decimal" placeholder="$ 0,00">
+            </label>
+            <label>
+              Method
+              <select>
+                <option>Bank Transfer</option>
+                <option>USDT</option>
+              </select>
+            </label>
+            <button class="withdraw-submit" type="button" disabled>Submit</button>
+          </section>
+        </div>
+      </div>
+    </section>
 
     <div class="modal-backdrop" data-modal="signin" aria-hidden="true">
       <div class="modal" role="dialog" aria-modal="true" aria-labelledby="signinTitle">
         <button class="close-btn" type="button" data-close-modal aria-label="关闭">×</button>
         <span class="modal-kicker">Demo account</span>
-        <h2 id="signinTitle">Join 东哥slot</h2>
+        <h2 id="signinTitle">Join 大东slot</h2>
         <p>这是展示版账号入口。后续可以接邮箱、手机号、KYC、地理位置验证和风控审核。</p>
         <label>
           Email
