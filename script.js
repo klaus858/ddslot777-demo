@@ -8,6 +8,9 @@ const amountCards = document.querySelectorAll(".amount-card");
 const rechargeNote = document.querySelector("[data-recharge-note]");
 const homeBalance = document.querySelector("[data-home-balance]");
 const walletBalance = document.querySelector("[data-wallet-balance]");
+const depositSuccess = document.querySelector("[data-deposit-success]");
+const successAmount = document.querySelector("[data-success-amount]");
+const successBalance = document.querySelector("[data-success-balance]");
 let walletBalanceValue = 0.5;
 
 function getAmountText(card) {
@@ -35,6 +38,18 @@ function updateWalletBalance(value) {
   walletBalanceValue = value;
   if (walletBalance) walletBalance.textContent = formatUsd(walletBalanceValue);
   if (homeBalance) homeBalance.textContent = formatUsd(walletBalanceValue);
+}
+
+function showDepositSuccess(depositValue) {
+  if (successAmount) successAmount.textContent = `+${formatUsd(depositValue)}`;
+  if (successBalance) successBalance.textContent = formatUsd(walletBalanceValue);
+  depositSuccess?.classList.add("is-open");
+  depositSuccess?.setAttribute("aria-hidden", "false");
+}
+
+function closeDepositSuccess() {
+  depositSuccess?.classList.remove("is-open");
+  depositSuccess?.setAttribute("aria-hidden", "true");
 }
 
 function openModal(name) {
@@ -90,6 +105,7 @@ document.addEventListener("click", (event) => {
   const walletTab = event.target.closest("[data-wallet-tab]");
   const amountCard = event.target.closest(".amount-card");
   const rechargeButton = event.target.closest("[data-recharge-submit]");
+  const closeSuccessButton = event.target.closest("[data-close-success]");
 
   if (walletButton) {
     openWallet();
@@ -105,6 +121,10 @@ document.addEventListener("click", (event) => {
 
   if (closeButton || event.target.classList.contains("modal-backdrop")) {
     closeModals();
+  }
+
+  if (closeSuccessButton || event.target === depositSuccess) {
+    closeDepositSuccess();
   }
 
   if (scrollButton) {
@@ -145,6 +165,7 @@ document.addEventListener("click", (event) => {
       rechargeButton.classList.add("is-success");
       rechargeButton.textContent = "Deposit Success";
       rechargeNote.innerHTML = `Callback success: <strong>+${formatUsd(depositValue)}</strong> credited. Balance: <strong>${formatUsd(walletBalanceValue)}</strong>`;
+      showDepositSuccess(depositValue);
 
       window.setTimeout(() => {
         rechargeButton.classList.remove("is-success");
@@ -157,6 +178,7 @@ document.addEventListener("click", (event) => {
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
+    closeDepositSuccess();
     closeWallet();
     closeModals();
   }
