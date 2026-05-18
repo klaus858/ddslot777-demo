@@ -16,6 +16,8 @@
           <strong>大东</strong>
           <span>slot</span>
         </div>
+        <div class="home-balance-cover" aria-hidden="true"></div>
+        <div class="home-balance-value" data-home-balance aria-hidden="true">$0.50</div>
 
         <button class="hotspot wallet-hotspot" type="button" data-open-wallet aria-label="打开钱包"></button>
         <button class="hotspot join-hotspot" type="button" data-open-modal="signin" aria-label="Join now"></button>
@@ -47,7 +49,7 @@
         <div class="wallet-tabs" role="tablist" aria-label="Wallet actions">
           <button class="wallet-tab active" type="button" data-wallet-tab="recharge" role="tab" aria-selected="true">
             <span class="pig-icon"></span>
-            Recharge
+            Deposit
           </button>
           <button class="wallet-tab" type="button" data-wallet-tab="withdraw" role="tab" aria-selected="false">
             <span class="card-icon"></span>
@@ -69,29 +71,34 @@
             <div class="bonus-steps" aria-label="Deposit bonus steps">
               <button class="bonus-step active" type="button">
                 <span>1st</span>
+                <i class="bonus-gift-icon" aria-hidden="true"><em></em></i>
                 <b>+30%</b>
               </button>
               <button class="bonus-step" type="button">
                 <span>2nd</span>
+                <i class="bonus-gift-icon" aria-hidden="true"><em></em></i>
                 <b>+20%</b>
               </button>
               <button class="bonus-step" type="button">
                 <span>3rd</span>
+                <i class="bonus-gift-icon" aria-hidden="true"><em></em></i>
                 <b>+20%</b>
               </button>
               <button class="bonus-step" type="button">
                 <span>4th</span>
+                <i class="bonus-gift-icon" aria-hidden="true"><em></em></i>
                 <b>+25%</b>
               </button>
               <button class="bonus-step" type="button">
                 <span>5th</span>
+                <i class="bonus-gift-icon" aria-hidden="true"><em></em></i>
                 <b>+30%</b>
               </button>
             </div>
           </section>
 
           <div class="amount-grid" aria-label="Recharge amounts">
-            <button class="amount-card" type="button"><span>10%</span>$ 10,00</button>
+            <button class="amount-card selected" type="button"><span>10%</span>$ 10,00</button>
             <button class="amount-card" type="button"><span>10%</span>$ 20,00</button>
             <button class="amount-card" type="button"><span>10%</span>$ 30,00</button>
             <button class="amount-card" type="button"><span>20%</span>$ 50,00</button>
@@ -101,13 +108,18 @@
             <button class="amount-card" type="button"><span>30%</span>$ 500,00</button>
             <button class="amount-card" type="button"><span>30%</span>$ 1,00K</button>
           </div>
+
+          <div class="recharge-footer">
+            <p data-recharge-note>Selected amount: <strong>$ 10,00</strong></p>
+            <button class="recharge-submit" type="button" data-recharge-submit>Deposit Now</button>
+          </div>
         </div>
 
         <div class="wallet-panel" data-wallet-panel="withdraw">
           <section class="withdraw-card">
             <h2>Withdraw</h2>
             <p>Available Balance</p>
-            <strong>$0.50</strong>
+            <strong data-wallet-balance>$0.50</strong>
             <label>
               Amount
               <input type="text" inputmode="decimal" placeholder="$ 0,00">
