@@ -7,6 +7,7 @@ const body = document.body;
 const modals = document.querySelectorAll(".modal-backdrop");
 const navButtons = document.querySelectorAll("[data-nav]");
 const walletPage = document.querySelector("#walletPage");
+const activityPage = document.querySelector("#activityPage");
 const walletTabs = document.querySelectorAll("[data-wallet-tab]");
 const walletPanels = document.querySelectorAll("[data-wallet-panel]");
 const amountCards = document.querySelectorAll(".amount-card");
@@ -16,10 +17,70 @@ const walletBalance = document.querySelector("[data-wallet-balance]");
 const depositSuccess = document.querySelector("[data-deposit-success]");
 const successAmount = document.querySelector("[data-success-amount]");
 const successBalance = document.querySelector("[data-success-balance]");
+const activityDetailModal = document.querySelector("[data-activity-detail-modal]");
+const detailKicker = document.querySelector("[data-detail-kicker]");
+const detailTitle = document.querySelector("[data-detail-title]");
+const detailCopy = document.querySelector("[data-detail-copy]");
+const detailRuleOne = document.querySelector("[data-detail-rule-one]");
+const detailRuleTwo = document.querySelector("[data-detail-rule-two]");
+const detailCta = document.querySelector("[data-detail-cta]");
 const promoSlides = Array.from(document.querySelectorAll(".promo-slide"));
 const promoDots = Array.from(document.querySelectorAll(".promo-dots span"));
 let walletBalanceValue = 0.5;
 let activePromo = 0;
+
+const activityDetails = {
+  deposit: {
+    kicker: "Deposit Bonus",
+    title: "5th Deposit Bonus 125%",
+    copy: "Unlock staged bonus rewards across your first five demo deposits.",
+    ruleOne: "First deposit starts with a 30% reward.",
+    ruleTwo: "Bonus levels update automatically in the wallet preview.",
+    cta: "Deposit Now",
+    opensWallet: true,
+  },
+  "daily-rebate": {
+    kicker: "Free Bonus",
+    title: "Daily Rebate 0.5%",
+    copy: "The more you play in the demo, the more cashback your account preview can show.",
+    ruleOne: "Calculated from eligible demo wagers.",
+    ruleTwo: "Designed for retention and daily return flow.",
+    cta: "Go Play",
+  },
+  login: {
+    kicker: "Daily Rewards",
+    title: "Daily Login Rewards",
+    copy: "Show a simple daily claim flow that gives players a reason to come back.",
+    ruleOne: "One claim per demo day.",
+    ruleTwo: "Reward copy and amount can be changed later.",
+    cta: "Claim Reward",
+  },
+  "free-spin": {
+    kicker: "Free Spin",
+    title: "Free Spin - Easy Win",
+    copy: "Spin once every day and claim demo bonus credits instantly.",
+    ruleOne: "Available once per demo day.",
+    ruleTwo: "Rewards are credited to the demo wallet.",
+    cta: "Check Now",
+  },
+  "loss-rescue": {
+    kicker: "Rescue Bonus",
+    title: "Loss Rescue 10%",
+    copy: "A comeback-style offer for users after tough sessions.",
+    ruleOne: "Shows a percentage rescue reward in the activity center.",
+    ruleTwo: "Can later be linked to wager history and VIP level.",
+    cta: "Deposit",
+    opensWallet: true,
+  },
+  refer: {
+    kicker: "Referral",
+    title: "Refer & Earn",
+    copy: "Invite friends and unlock a referral rewards preview.",
+    ruleOne: "Share flow can be connected to tracking links later.",
+    ruleTwo: "Reward tiers can be configured from your backend later.",
+    cta: "Invite Now",
+  },
+};
 
 function getAmountText(card) {
   return Array.from(card.childNodes)
@@ -91,6 +152,41 @@ function closeWallet() {
   body.classList.remove("wallet-open");
 }
 
+function openActivity() {
+  closeModals();
+  closeWallet();
+  activityPage?.classList.add("is-open");
+  activityPage?.setAttribute("aria-hidden", "false");
+  body.classList.add("wallet-open");
+  activityPage?.scrollTo({ top: 0, behavior: "instant" });
+}
+
+function closeActivity() {
+  activityPage?.classList.remove("is-open");
+  activityPage?.setAttribute("aria-hidden", "true");
+  body.classList.remove("wallet-open");
+}
+
+function openActivityDetail(detailKey) {
+  const detail = activityDetails[detailKey] || activityDetails["free-spin"];
+  if (detailKicker) detailKicker.textContent = detail.kicker;
+  if (detailTitle) detailTitle.textContent = detail.title;
+  if (detailCopy) detailCopy.textContent = detail.copy;
+  if (detailRuleOne) detailRuleOne.textContent = detail.ruleOne;
+  if (detailRuleTwo) detailRuleTwo.textContent = detail.ruleTwo;
+  if (detailCta) {
+    detailCta.textContent = detail.cta;
+    detailCta.dataset.opensWallet = detail.opensWallet ? "true" : "false";
+  }
+  activityDetailModal?.classList.add("is-open");
+  activityDetailModal?.setAttribute("aria-hidden", "false");
+}
+
+function closeActivityDetail() {
+  activityDetailModal?.classList.remove("is-open");
+  activityDetailModal?.setAttribute("aria-hidden", "true");
+}
+
 function selectWalletTab(tabName) {
   walletTabs.forEach((tab) => {
     const active = tab.dataset.walletTab === tabName;
@@ -106,6 +202,11 @@ function selectWalletTab(tabName) {
 document.addEventListener("click", (event) => {
   const walletButton = event.target.closest("[data-open-wallet]");
   const closeWalletButton = event.target.closest("[data-close-wallet]");
+  const activityButton = event.target.closest("[data-open-activity]");
+  const closeActivityButton = event.target.closest("[data-close-activity]");
+  const activityDetailButton = event.target.closest("[data-activity-detail]");
+  const closeActivityDetailButton = event.target.closest("[data-close-activity-detail]");
+  const detailCtaButton = event.target.closest("[data-detail-cta]");
   const openButton = event.target.closest("[data-open-modal]");
   const closeButton = event.target.closest("[data-close-modal]");
   const scrollButton = event.target.closest("[data-scroll-target]");
@@ -116,11 +217,39 @@ document.addEventListener("click", (event) => {
   const closeSuccessButton = event.target.closest("[data-close-success]");
 
   if (walletButton) {
+    closeActivity();
+    closeActivityDetail();
     openWallet();
   }
 
   if (closeWalletButton) {
     closeWallet();
+  }
+
+  if (activityButton) {
+    openActivity();
+  }
+
+  if (closeActivityButton) {
+    closeActivity();
+  }
+
+  if (activityDetailButton) {
+    openActivityDetail(activityDetailButton.dataset.activityDetail);
+  }
+
+  if (closeActivityDetailButton || event.target === activityDetailModal) {
+    closeActivityDetail();
+  }
+
+  if (detailCtaButton) {
+    if (detailCtaButton.dataset.opensWallet === "true") {
+      closeActivityDetail();
+      closeActivity();
+      openWallet();
+    } else {
+      closeActivityDetail();
+    }
   }
 
   if (openButton) {
@@ -186,8 +315,10 @@ document.addEventListener("click", (event) => {
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
+    closeActivityDetail();
     closeDepositSuccess();
     closeWallet();
+    closeActivity();
     closeModals();
   }
 });

@@ -78,11 +78,140 @@
         <button class="hotspot wallet-hotspot" type="button" data-open-wallet aria-label="打开钱包"></button>
         <button class="hotspot join-hotspot" type="button" data-open-modal="signin" aria-label="Join now"></button>
         <button class="hotspot jackpot-hotspot" type="button" data-open-wallet aria-label="Airdrop Jackpot"></button>
-        <button class="hotspot bonus-card-hotspot" type="button" data-open-modal="bonus" aria-label="Bonus Cashback"></button>
+        <button class="hotspot bonus-card-hotspot" type="button" data-open-activity aria-label="Bonus Cashback"></button>
         <button class="hotspot bottom-wallet-hotspot" type="button" data-open-wallet aria-label="底部钱包"></button>
-        <button class="hotspot bottom-bonus-hotspot" type="button" data-open-modal="bonus" aria-label="底部 Bonus"></button>
+        <button class="hotspot bottom-bonus-hotspot" type="button" data-open-activity aria-label="Rewards"></button>
       </div>
     </main>
+
+    <section class="activity-page" id="activityPage" aria-hidden="true">
+      <div class="activity-shell">
+        <header class="activity-topbar">
+          <div class="activity-brand" aria-label="Da Dong Slot">
+            <span class="brand-spade"></span>
+            <strong>DD</strong>
+            <b>SLOT</b>
+          </div>
+          <div class="activity-balance">
+            <span>$ 0,00</span>
+            <button type="button" data-open-wallet aria-label="Deposit">+</button>
+          </div>
+          <button class="activity-bell" type="button" aria-label="Notifications"><span>13</span></button>
+          <button class="activity-profile" type="button" aria-label="Profile"></button>
+        </header>
+
+        <section class="activity-hero-card">
+          <div class="activity-hero-copy">
+            <h1>FREE SPIN - EASY</h1>
+            <p>SPIN EASY $10 WIN!</p>
+          </div>
+          <div class="activity-wheel" aria-hidden="true">
+            <span></span>
+          </div>
+          <button class="activity-details-pill" type="button" data-activity-detail="free-spin">Details</button>
+          <div class="activity-slider-dots" aria-hidden="true"><span></span><b></b><span></span></div>
+        </section>
+
+        <main class="activity-card">
+          <section class="activity-section">
+            <h2>Deposit Bonus</h2>
+            <article class="activity-deposit-panel">
+              <button class="activity-info" type="button" data-activity-detail="deposit">i</button>
+              <div class="activity-safe-icon" aria-hidden="true"></div>
+              <div class="activity-deposit-copy">
+                <h3>5th Deposit Bonus 125%</h3>
+                <p>1st Deposit Rewards: <strong>30%</strong></p>
+              </div>
+              <button class="activity-gold-btn" type="button" data-open-wallet>Deposit</button>
+              <div class="activity-bonus-steps">
+                <button class="activity-bonus-step active" type="button">
+                  <span>1st</span>
+                  <i class="bonus-gift-icon" aria-hidden="true"><em></em></i>
+                  <b>+30%</b>
+                </button>
+                <button class="activity-bonus-step" type="button">
+                  <span>2nd</span>
+                  <i class="bonus-gift-icon" aria-hidden="true"><em></em></i>
+                  <b>+20%</b>
+                </button>
+                <button class="activity-bonus-step" type="button">
+                  <span>3rd</span>
+                  <i class="bonus-gift-icon" aria-hidden="true"><em></em></i>
+                  <b>+20%</b>
+                </button>
+                <button class="activity-bonus-step" type="button">
+                  <span>4th</span>
+                  <i class="bonus-gift-icon" aria-hidden="true"><em></em></i>
+                  <b>+25%</b>
+                </button>
+                <button class="activity-bonus-step" type="button">
+                  <span>5th</span>
+                  <i class="bonus-gift-icon" aria-hidden="true"><em></em></i>
+                  <b>+30%</b>
+                </button>
+              </div>
+            </article>
+          </section>
+
+          <section class="activity-section free-section">
+            <h2>Free Bonus</h2>
+            <article class="activity-list-card">
+              <button class="activity-info" type="button" data-activity-detail="daily-rebate">i</button>
+              <span class="activity-icon calendar" aria-hidden="true"></span>
+              <div>
+                <h3>Daily Rebate 0.5%</h3>
+                <p>The more bet, the more cashback</p>
+              </div>
+              <button class="activity-outline-btn" type="button" data-activity-detail="daily-rebate">Go Play</button>
+            </article>
+            <article class="activity-list-card">
+              <button class="activity-info" type="button" data-activity-detail="login">i</button>
+              <span class="activity-icon login" aria-hidden="true"></span>
+              <div>
+                <h3>Daily Login Rewards</h3>
+                <p>Get <strong>$ 28,00</strong> for free!</p>
+              </div>
+              <button class="activity-outline-btn" type="button" data-activity-detail="login">Go Play</button>
+            </article>
+            <article class="activity-list-card">
+              <button class="activity-info" type="button" data-activity-detail="free-spin">i</button>
+              <span class="activity-icon wheel" aria-hidden="true"></span>
+              <div>
+                <h3>Free Spin</h3>
+                <p>Get <strong>$ 10,00</strong> free every day</p>
+              </div>
+              <button class="activity-outline-btn" type="button" data-activity-detail="free-spin">Check</button>
+            </article>
+            <article class="activity-list-card">
+              <button class="activity-info" type="button" data-activity-detail="loss-rescue">i</button>
+              <span class="activity-icon shield" aria-hidden="true"></span>
+              <div>
+                <h3>Loss Rescue 10%</h3>
+                <p>Claim support after tough sessions</p>
+              </div>
+              <button class="activity-outline-btn" type="button" data-open-wallet>Deposit</button>
+            </article>
+            <article class="activity-list-card">
+              <button class="activity-info" type="button" data-activity-detail="refer">i</button>
+              <span class="activity-icon refer" aria-hidden="true"></span>
+              <div>
+                <h3>Refer & Earn</h3>
+                <p>Invite friends and unlock rewards</p>
+              </div>
+              <button class="activity-outline-btn" type="button" data-activity-detail="refer">Invite</button>
+            </article>
+          </section>
+        </main>
+
+        <nav class="activity-bottom-nav" aria-label="Activity navigation">
+          <button type="button" data-close-activity><span class="nav-home"></span>Home</button>
+          <button type="button" data-activity-detail="refer"><span class="nav-refer"></span>Refer</button>
+          <button class="nav-wallet-main" type="button" data-open-wallet><span></span>Wallet</button>
+          <button class="active" type="button"><span class="nav-gift"></span>Rewards</button>
+          <button type="button"><span class="nav-me"></span>Me</button>
+        </nav>
+      </div>
+    </section>
 
     <section class="wallet-page" id="walletPage" aria-hidden="true">
       <div class="wallet-shell">
@@ -200,6 +329,21 @@
         <p><strong data-success-amount>+$10.00</strong> has been credited to your demo balance.</p>
         <span>Current balance: <b data-success-balance>$10.50</b></span>
         <button type="button" data-close-success>Done</button>
+      </div>
+    </div>
+
+    <div class="activity-detail-modal" data-activity-detail-modal aria-hidden="true">
+      <div class="activity-detail-card" role="dialog" aria-modal="true" aria-labelledby="activityDetailTitle">
+        <button class="activity-detail-close" type="button" data-close-activity-detail aria-label="Close">×</button>
+        <div class="activity-detail-art" data-detail-art aria-hidden="true"></div>
+        <span data-detail-kicker>Activity Details</span>
+        <h2 id="activityDetailTitle" data-detail-title>Free Spin</h2>
+        <p data-detail-copy>Spin once every day and claim demo bonus credits instantly.</p>
+        <ul>
+          <li data-detail-rule-one>Available once per demo day.</li>
+          <li data-detail-rule-two>Rewards are credited to the demo wallet.</li>
+        </ul>
+        <button class="activity-detail-cta" type="button" data-detail-cta>Join Now</button>
       </div>
     </div>
 
