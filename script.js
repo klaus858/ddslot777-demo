@@ -5,6 +5,37 @@ const walletPage = document.querySelector("#walletPage");
 const walletTabs = document.querySelectorAll("[data-wallet-tab]");
 const walletPanels = document.querySelectorAll("[data-wallet-panel]");
 const amountCards = document.querySelectorAll(".amount-card");
+const rechargeNote = document.querySelector("[data-recharge-note]");
+const homeBalance = document.querySelector("[data-home-balance]");
+const walletBalance = document.querySelector("[data-wallet-balance]");
+let walletBalanceValue = 0.5;
+
+function getAmountText(card) {
+  return Array.from(card.childNodes)
+    .filter((node) => node.nodeType === Node.TEXT_NODE)
+    .map((node) => node.textContent.trim())
+    .find(Boolean) || "$ 10,00";
+}
+
+function parseAmountValue(amountText) {
+  const normalized = amountText.replace(/\$/g, "").replace(/\s/g, "").toUpperCase();
+  const multiplier = normalized.includes("K") ? 1000 : 1;
+  const numeric = Number.parseFloat(normalized.replace("K", "").replace(",", "."));
+  return Number.isFinite(numeric) ? numeric * multiplier : 0;
+}
+
+function formatUsd(value) {
+  return `$${value.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+}
+
+function updateWalletBalance(value) {
+  walletBalanceValue = value;
+  if (walletBalance) walletBalance.textContent = formatUsd(walletBalanceValue);
+  if (homeBalance) homeBalance.textContent = formatUsd(walletBalanceValue);
+}
 
 function openModal(name) {
   const modal = document.querySelector(`[data-modal="${name}"]`);
@@ -58,6 +89,7 @@ document.addEventListener("click", (event) => {
   const navButton = event.target.closest("[data-nav]");
   const walletTab = event.target.closest("[data-wallet-tab]");
   const amountCard = event.target.closest(".amount-card");
+  const rechargeButton = event.target.closest("[data-recharge-submit]");
 
   if (walletButton) {
     openWallet();
@@ -91,6 +123,35 @@ document.addEventListener("click", (event) => {
   if (amountCard) {
     amountCards.forEach((card) => card.classList.remove("selected"));
     amountCard.classList.add("selected");
+    if (rechargeNote) {
+      const selectedAmount = getAmountText(amountCard);
+      rechargeNote.innerHTML = `Selected amount: <strong>${selectedAmount}</strong>`;
+    }
+  }
+
+  if (rechargeButton && rechargeNote) {
+    const selectedCard = document.querySelector(".amount-card.selected");
+    const selectedAmount = selectedCard ? getAmountText(selectedCard) : "$ 10,00";
+    const depositValue = parseAmountValue(selectedAmount);
+
+    rechargeButton.classList.add("is-processing");
+    rechargeButton.textContent = "Processing...";
+    rechargeButton.disabled = true;
+    rechargeNote.innerHTML = `Waiting for test callback: <strong>${selectedAmount}</strong>`;
+
+    window.setTimeout(() => {
+      updateWalletBalance(walletBalanceValue + depositValue);
+      rechargeButton.classList.remove("is-processing");
+      rechargeButton.classList.add("is-success");
+      rechargeButton.textContent = "Deposit Success";
+      rechargeNote.innerHTML = `Callback success: <strong>+${formatUsd(depositValue)}</strong> credited. Balance: <strong>${formatUsd(walletBalanceValue)}</strong>`;
+
+      window.setTimeout(() => {
+        rechargeButton.classList.remove("is-success");
+        rechargeButton.textContent = "Deposit Now";
+        rechargeButton.disabled = false;
+      }, 1400);
+    }, 850);
   }
 });
 
