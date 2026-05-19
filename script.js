@@ -3,12 +3,14 @@ walletPolishStylesheet.rel = "stylesheet";
 walletPolishStylesheet.href = "wallet-polish.css?v=gift-popup-1";
 document.head.appendChild(walletPolishStylesheet);
 
-const API_BASE = "https://ddslot777-api.vercel.app";
-const DEMO_USER_ID = "U10021";
+const API_BASE = new URLSearchParams(window.location.search).get("api") === "local"
+  ? "http://127.0.0.1:8080"
+  : "https://ddslot777-api.vercel.app";
+const AUTH_STORAGE_KEY = "ddslot-auth-session";
 
 const premiumPolishStylesheet = document.createElement("link");
 premiumPolishStylesheet.rel = "stylesheet";
-premiumPolishStylesheet.href = "premium-polish.css?v=global-exact-nav-4";
+premiumPolishStylesheet.href = "premium-polish.css?v=local-auth-preview-2";
 document.head.appendChild(premiumPolishStylesheet);
 
 const globalNavSingleFix = document.createElement("style");
@@ -69,9 +71,30 @@ const activityHeroTitle = document.querySelector("[data-activity-hero-title]");
 const activityHeroSubtitle = document.querySelector("[data-activity-hero-subtitle]");
 const activityHeroDetail = document.querySelector("[data-activity-hero-detail]");
 const activityHeroDots = Array.from(document.querySelectorAll("[data-activity-hero-dot]"));
+const authModal = document.querySelector(".auth-modal");
+const authTitle = document.querySelector(".auth-title");
+const authTabs = Array.from(document.querySelectorAll("[data-auth-mode]"));
+const authMethods = Array.from(document.querySelectorAll("[data-auth-method]"));
+const authPhoneField = document.querySelector('[data-auth-field="phone"]');
+const authEmailField = document.querySelector('[data-auth-field="email"]');
+const authPhoneInput = document.querySelector("[data-auth-phone]");
+const authEmailInput = document.querySelector("[data-auth-email]");
+const authPassword = document.querySelector("[data-auth-password]");
+const authPasswordToggle = document.querySelector("[data-auth-toggle-password]");
+const authSubmit = document.querySelector("[data-auth-submit]");
+const authMessage = document.querySelector("[data-auth-message]");
+const authRules = document.querySelector("[data-auth-rules]");
+const authRuleCase = document.querySelector('[data-rule="case"]');
+const authRuleNumber = document.querySelector('[data-rule="number"]');
+const authRuleLength = document.querySelector('[data-rule="length"]');
 let walletBalanceValue = 0.5;
 let activePromo = 0;
 let activeActivityHero = 0;
+let authMode = "login";
+let authMethod = "phone";
+let authSession = readAuthSession();
+let currentUser = authSession?.user || null;
+let isAuthenticated = Boolean(authSession?.token && authSession?.user);
 
 const activityHeroSlides = [
   {
@@ -174,17 +197,55 @@ function updateWalletBalance(value) {
   if (homeBalance) homeBalance.textContent = formatUsd(walletBalanceValue);
   if (activityBalance) activityBalance.textContent = formatUsd(walletBalanceValue);
   if (walletTopBalance) walletTopBalance.textContent = formatUsd(walletBalanceValue);
-  if (globalBalance) globalBalance.textContent = formatUsd(walletBalanceValue);
+  if (globalBalance && isAuthenticated) globalBalance.textContent = formatUsd(walletBalanceValue);
+}
+
+function readAuthSession() {
+  try {
+    return JSON.parse(window.localStorage.getItem(AUTH_STORAGE_KEY) || "null");
+  } catch (error) {
+    return null;
+  }
+}
+
+function saveAuthSession(session) {
+  authSession = session;
+  currentUser = session?.user || null;
+  isAuthenticated = Boolean(session?.token && session?.user);
+  if (session) {
+    window.localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(session));
+    window.localStorage.setItem("ddslot-auth-state", "signed-in");
+  } else {
+    window.localStorage.removeItem(AUTH_STORAGE_KEY);
+    window.localStorage.removeItem("ddslot-auth-state");
+  }
+}
+
+function renderAuthState() {
+  body.classList.toggle("is-authenticated", isAuthenticated);
+  if (globalBalance && isAuthenticated) globalBalance.textContent = formatUsd(walletBalanceValue);
+}
+
+function applyAuthenticatedUser(user) {
+  if (user && typeof user.balance === "number") {
+    updateWalletBalance(user.balance);
+  }
+  renderAuthState();
+  closeModals();
 }
 
 async function requestApi(path, options = {}) {
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    ...(options.headers || {}),
+  };
+  if (authSession?.token && !headers.Authorization) {
+    headers.Authorization = `Bearer ${authSession.token}`;
+  }
   const response = await fetch(`${API_BASE}${path}`, {
     ...options,
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
+    headers,
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
@@ -194,12 +255,21 @@ async function requestApi(path, options = {}) {
 }
 
 async function syncWalletFromApi() {
+  if (!authSession?.token) {
+    saveAuthSession(null);
+    renderAuthState();
+    return;
+  }
   try {
-    const data = await requestApi(`/api/wallet/session?userId=${encodeURIComponent(DEMO_USER_ID)}`);
+    const data = await requestApi("/api/auth/me");
     if (typeof data.user?.balance === "number") {
+      saveAuthSession({ token: authSession.token, user: data.user });
       updateWalletBalance(data.user.balance);
+      renderAuthState();
     }
   } catch (error) {
+    saveAuthSession(null);
+    renderAuthState();
     console.warn("Wallet API sync failed", error);
   }
 }
@@ -208,11 +278,81 @@ async function syncDepositSuccessToApi(amount) {
   return requestApi("/api/wallet/deposit/success", {
     method: "POST",
     body: JSON.stringify({
-      userId: DEMO_USER_ID,
+      userId: currentUser?.id,
       amount,
       channel: "demo-wallet",
     }),
   });
+}
+
+function setAuthMessage(message, type = "error") {
+  if (!authMessage) return;
+  authMessage.textContent = message || "";
+  authMessage.classList.toggle("is-visible", Boolean(message));
+  authMessage.classList.toggle("is-success", type === "success");
+}
+
+function getAuthIdentifier() {
+  return authMethod === "email" ? authEmailInput?.value.trim() || "" : authPhoneInput?.value.trim() || "";
+}
+
+function authErrorMessage(error) {
+  const message = error?.message || "";
+  const map = {
+    invalid_credentials: "Account or password is incorrect.",
+    missing_credentials: "Enter your account and password.",
+    missing_identifier: "Enter your phone number or email.",
+    weak_password: "Password must match all rules.",
+    user_exists: "This account is already registered.",
+  };
+  return map[message] || "Unable to connect. Please try again.";
+}
+
+async function submitAuthForm() {
+  const identifier = getAuthIdentifier();
+  const password = authPassword?.value || "";
+  const passwordReady = /[A-Z]/.test(password) && /[a-z]/.test(password) && /\d/.test(password) && password.length >= 6;
+
+  if (!identifier || !password) {
+    setAuthMessage("Enter your account and password.");
+    return;
+  }
+  if (!passwordReady) {
+    setAuthMessage("Password must match all rules.");
+    return;
+  }
+
+  const isSignup = authMode === "signup";
+  const payload = {
+    password,
+    ...(authMethod === "email" ? { email: identifier } : { phone: identifier }),
+  };
+  if (isSignup) {
+    payload.username = authMethod === "email" ? identifier.split("@")[0] : identifier.replace(/\D/g, "");
+  } else {
+    payload.identifier = identifier;
+  }
+
+  if (authSubmit) {
+    authSubmit.disabled = true;
+    authSubmit.textContent = isSignup ? "Creating..." : "Logging in...";
+  }
+  setAuthMessage(isSignup ? "Creating account..." : "Checking account...", "success");
+  try {
+    const data = await requestApi(isSignup ? "/api/auth/register" : "/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+    saveAuthSession({ token: data.token, user: data.user });
+    applyAuthenticatedUser(data.user);
+  } catch (error) {
+    setAuthMessage(authErrorMessage(error));
+  } finally {
+    if (authSubmit) {
+      authSubmit.disabled = false;
+      authSubmit.textContent = isSignup ? "Sign Up" : "Log In";
+    }
+  }
 }
 
 function showDepositSuccess(depositValue) {
@@ -227,9 +367,54 @@ function closeDepositSuccess() {
   depositSuccess?.setAttribute("aria-hidden", "true");
 }
 
+function setAuthMode(mode) {
+  authMode = mode;
+  setAuthMessage("");
+  const isSignup = mode === "signup";
+  authTabs.forEach((tab) => {
+    const active = tab.dataset.authMode === mode;
+    tab.classList.toggle("is-active", active);
+    tab.setAttribute("aria-selected", String(active));
+  });
+  if (authTitle) authTitle.textContent = isSignup ? "Sign Up" : "Log In";
+  if (authSubmit) authSubmit.textContent = isSignup ? "Sign Up" : "Log In";
+}
+
+function setAuthMethod(method) {
+  authMethod = method;
+  setAuthMessage("");
+  authMethods.forEach((tab) => {
+    const active = tab.dataset.authMethod === method;
+    tab.classList.toggle("is-active", active);
+    tab.setAttribute("aria-selected", String(active));
+  });
+  if (authPhoneField) authPhoneField.hidden = method !== "phone";
+  if (authEmailField) authEmailField.hidden = method !== "email";
+}
+
+function updatePasswordRules() {
+  const value = authPassword?.value || "";
+  const hasUpper = /[A-Z]/.test(value);
+  const hasLower = /[a-z]/.test(value);
+  const hasNumber = /\d/.test(value);
+  authRules?.classList.toggle("is-visible", value.length > 0);
+  authRuleCase?.classList.toggle("is-valid", hasUpper && hasLower);
+  authRuleNumber?.classList.toggle("is-valid", hasNumber);
+  authRuleLength?.classList.toggle("is-valid", value.length >= 6);
+}
+
 function openModal(name) {
   const modal = document.querySelector(`[data-modal="${name}"]`);
   if (!modal) return;
+
+  if (name === "signin" && authPassword) {
+    authPassword.value = "";
+    authPassword.type = "password";
+    authPasswordToggle?.classList.remove("is-visible");
+    authPasswordToggle?.setAttribute("aria-label", "Show password");
+    setAuthMessage("");
+    updatePasswordRules();
+  }
 
   modal.classList.add("is-open");
   modal.setAttribute("aria-hidden", "false");
@@ -383,9 +568,39 @@ document.addEventListener("click", (event) => {
   const promoDot = event.target.closest(".promo-dots span");
   const activityHeroDot = event.target.closest("[data-activity-hero-dot]");
   const goHomeButton = event.target.closest("[data-go-home]");
+  const authModeButton = event.target.closest("[data-auth-mode]");
+  const authMethodButton = event.target.closest("[data-auth-method]");
+  const authPasswordButton = event.target.closest("[data-auth-toggle-password]");
+  const authEntryButton = event.target.closest("[data-auth-entry]");
+  const authProfileButton = event.target.closest("[data-auth-profile]");
 
   if (goHomeButton) {
     goHome();
+    return;
+  }
+
+  if (authModeButton) {
+    setAuthMode(authModeButton.dataset.authMode);
+  }
+
+  if (authEntryButton) {
+    setAuthMode(authEntryButton.dataset.authEntry || "login");
+  }
+
+  if (authMethodButton) {
+    setAuthMethod(authMethodButton.dataset.authMethod);
+  }
+
+  if (authPasswordButton && authPassword) {
+    const showPassword = authPassword.type === "password";
+    authPassword.type = showPassword ? "text" : "password";
+    authPasswordButton.classList.toggle("is-visible", showPassword);
+    authPasswordButton.setAttribute("aria-label", showPassword ? "Hide password" : "Show password");
+  }
+
+  if (authProfileButton && !isAuthenticated) {
+    setAuthMode("login");
+    openModal("signin");
     return;
   }
 
@@ -399,6 +614,12 @@ document.addEventListener("click", (event) => {
   }
 
   if (walletButton) {
+    if (!isAuthenticated) {
+      closeActivity();
+      closeActivityDetail();
+      openModal("signin");
+      return;
+    }
     closeActivity();
     closeActivityDetail();
     openWallet();
@@ -504,6 +725,17 @@ document.addEventListener("click", (event) => {
   }
 });
 
+authPassword?.addEventListener("input", updatePasswordRules);
+authModal?.querySelector(".auth-form")?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  submitAuthForm();
+});
+setAuthMode("login");
+setAuthMethod("phone");
+updatePasswordRules();
+renderAuthState();
+syncWalletFromApi();
+
 document.addEventListener("keydown", (event) => {
   if ((event.key === "Enter" || event.key === " ") && event.target.closest?.("[data-go-home]")) {
     event.preventDefault();
@@ -533,7 +765,6 @@ function showPromoSlide(index) {
 }
 
 showActivityHeroSlide(0);
-syncWalletFromApi();
 
 attachSwipe(promoCarousel, () => showPromoSlide(activePromo + 1), () => showPromoSlide(activePromo - 1));
 attachSwipe(activityHero, () => showActivityHeroSlide(activeActivityHero + 1), () => showActivityHeroSlide(activeActivityHero - 1));
