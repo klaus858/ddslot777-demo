@@ -7,6 +7,30 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
+    <nav class="global-top-nav" aria-label="Global top navigation">
+      <button class="global-logo-hit" type="button" data-go-home aria-label="返回首页">
+        <span class="global-logo-cover" aria-hidden="true"></span>
+        <span class="global-wordmark" aria-hidden="true">
+          <strong>大东</strong>
+          <b>slot</b>
+        </span>
+      </button>
+      <span class="global-balance-cover" aria-hidden="true"></span>
+      <span class="global-balance-value" data-global-balance aria-hidden="true">$0.50</span>
+      <button class="global-wallet-hit" type="button" data-open-wallet aria-label="Wallet"></button>
+      <button class="global-gift-hit" type="button" data-open-activity aria-label="Bonus"></button>
+      <button class="global-bell-hit" type="button" aria-label="Notifications"></button>
+      <button class="global-profile-hit" type="button" aria-label="Profile"></button>
+    </nav>
+
+    <nav class="global-bottom-nav" aria-label="Global bottom navigation">
+      <button type="button" data-go-home aria-label="Menu"></button>
+      <button type="button" data-go-home aria-label="Casino"></button>
+      <button type="button" data-open-wallet aria-label="Wallet"></button>
+      <button type="button" data-open-activity aria-label="Bonus"></button>
+      <button type="button" data-go-home aria-label="Search"></button>
+    </nav>
+
     <main class="mirror-stage" aria-label="大东slot demo">
       <div class="phone-screen">
         <img class="source-screen" src="assets/xd-reference.png" alt="大东slot casino app home screen">
@@ -87,29 +111,34 @@
     <section class="activity-page" id="activityPage" aria-hidden="true">
       <div class="activity-shell">
         <header class="activity-topbar">
-          <div class="activity-brand" aria-label="Da Dong Slot">
+          <div class="activity-brand" role="button" tabindex="0" data-go-home aria-label="返回首页">
             <span class="brand-spade"></span>
-            <strong>DD</strong>
-            <b>SLOT</b>
+            <strong>大东</strong>
+            <b>slot</b>
           </div>
           <div class="activity-balance">
-            <span>$ 0,00</span>
+            <span data-activity-balance>$0.50</span>
             <button type="button" data-open-wallet aria-label="Deposit">+</button>
           </div>
-          <button class="activity-bell" type="button" aria-label="Notifications"><span>13</span></button>
+          <button class="activity-gift" type="button" data-activity-detail="deposit" aria-label="Bonus"><span>3</span></button>
+          <button class="activity-bell" type="button" aria-label="Notifications"><span>1</span></button>
           <button class="activity-profile" type="button" aria-label="Profile"></button>
         </header>
 
-        <section class="activity-hero-card">
+        <section class="activity-hero-card" data-activity-hero-carousel style="--activity-hero-image: url('assets/promo-5.webp')">
           <div class="activity-hero-copy">
-            <h1>FREE SPIN - EASY</h1>
-            <p>SPIN EASY $10 WIN!</p>
+            <h1 data-activity-hero-title>FREE SPIN - EASY</h1>
+            <p data-activity-hero-subtitle>SPIN EASY $10 WIN!</p>
           </div>
           <div class="activity-wheel" aria-hidden="true">
             <span></span>
           </div>
-          <button class="activity-details-pill" type="button" data-activity-detail="free-spin">Details</button>
-          <div class="activity-slider-dots" aria-hidden="true"><span></span><b></b><span></span></div>
+          <button class="activity-details-pill" type="button" data-activity-detail="free-spin" data-activity-hero-detail>Details</button>
+          <div class="activity-slider-dots" aria-label="Activity banners">
+            <button class="active" type="button" data-activity-hero-dot="0" aria-label="Free Spin banner" aria-current="true"></button>
+            <button type="button" data-activity-hero-dot="1" aria-label="Deposit Bonus banner"></button>
+            <button type="button" data-activity-hero-dot="2" aria-label="Refer and Earn banner"></button>
+          </div>
         </section>
 
         <main class="activity-card">
@@ -204,17 +233,32 @@
         </main>
 
         <nav class="activity-bottom-nav" aria-label="Activity navigation">
-          <button type="button" data-close-activity><span class="nav-home"></span>Home</button>
-          <button type="button" data-activity-detail="refer"><span class="nav-refer"></span>Refer</button>
+          <button type="button" data-close-activity><span class="nav-home"></span>Menu</button>
+          <button type="button" data-close-activity><span class="nav-refer"></span>Casino</button>
           <button class="nav-wallet-main" type="button" data-open-wallet><span></span>Wallet</button>
-          <button class="active" type="button"><span class="nav-gift"></span>Rewards</button>
-          <button type="button"><span class="nav-me"></span>Me</button>
+          <button class="active" type="button"><span class="nav-gift"></span>Bonus</button>
+          <button type="button" data-close-activity><span class="nav-me"></span>Search</button>
         </nav>
       </div>
     </section>
 
     <section class="wallet-page" id="walletPage" aria-hidden="true">
       <div class="wallet-shell">
+        <header class="activity-topbar wallet-global-topbar">
+          <div class="activity-brand" role="button" tabindex="0" data-go-home aria-label="返回首页">
+            <span class="brand-spade"></span>
+            <strong>大东</strong>
+            <b>slot</b>
+          </div>
+          <div class="activity-balance">
+            <span data-wallet-top-balance>$0.50</span>
+            <button type="button" data-open-wallet aria-label="Deposit">+</button>
+          </div>
+          <button class="activity-gift" type="button" data-activity-detail="deposit" aria-label="Bonus"><span>3</span></button>
+          <button class="activity-bell" type="button" aria-label="Notifications"><span>1</span></button>
+          <button class="activity-profile" type="button" aria-label="Profile"></button>
+        </header>
+
         <header class="wallet-header">
           <button class="wallet-back" type="button" data-close-wallet aria-label="返回">
             <span></span>
@@ -319,6 +363,14 @@
             <button class="withdraw-submit" type="button" disabled>Submit</button>
           </section>
         </div>
+
+        <nav class="activity-bottom-nav wallet-bottom-nav" aria-label="Wallet navigation">
+          <button type="button" data-close-wallet><span class="nav-home"></span>Menu</button>
+          <button type="button" data-close-wallet><span class="nav-refer"></span>Casino</button>
+          <button class="nav-wallet-main active" type="button"><span></span>Wallet</button>
+          <button type="button" data-open-activity><span class="nav-gift"></span>Bonus</button>
+          <button type="button" data-close-wallet><span class="nav-me"></span>Search</button>
+        </nav>
       </div>
     </section>
 
