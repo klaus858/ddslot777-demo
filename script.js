@@ -5,7 +5,7 @@ document.head.appendChild(walletPolishStylesheet);
 
 const premiumPolishStylesheet = document.createElement("link");
 premiumPolishStylesheet.rel = "stylesheet";
-premiumPolishStylesheet.href = "premium-polish.css?v=global-exact-nav-2";
+premiumPolishStylesheet.href = "premium-polish.css?v=global-exact-nav-3";
 document.head.appendChild(premiumPolishStylesheet);
 
 const body = document.body;
