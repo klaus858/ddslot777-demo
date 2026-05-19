@@ -3,6 +3,9 @@ walletPolishStylesheet.rel = "stylesheet";
 walletPolishStylesheet.href = "wallet-polish.css?v=gift-popup-1";
 document.head.appendChild(walletPolishStylesheet);
 
+const API_BASE = "https://ddslot777-api.vercel.app";
+const DEMO_USER_ID = "U10021";
+
 const premiumPolishStylesheet = document.createElement("link");
 premiumPolishStylesheet.rel = "stylesheet";
 premiumPolishStylesheet.href = "premium-polish.css?v=global-exact-nav-4";
@@ -172,6 +175,44 @@ function updateWalletBalance(value) {
   if (activityBalance) activityBalance.textContent = formatUsd(walletBalanceValue);
   if (walletTopBalance) walletTopBalance.textContent = formatUsd(walletBalanceValue);
   if (globalBalance) globalBalance.textContent = formatUsd(walletBalanceValue);
+}
+
+async function requestApi(path, options = {}) {
+  const response = await fetch(`${API_BASE}${path}`, {
+    ...options,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || `api_${response.status}`);
+  }
+  return data;
+}
+
+async function syncWalletFromApi() {
+  try {
+    const data = await requestApi(`/api/wallet/session?userId=${encodeURIComponent(DEMO_USER_ID)}`);
+    if (typeof data.user?.balance === "number") {
+      updateWalletBalance(data.user.balance);
+    }
+  } catch (error) {
+    console.warn("Wallet API sync failed", error);
+  }
+}
+
+async function syncDepositSuccessToApi(amount) {
+  return requestApi("/api/wallet/deposit/success", {
+    method: "POST",
+    body: JSON.stringify({
+      userId: DEMO_USER_ID,
+      amount,
+      channel: "demo-wallet",
+    }),
+  });
 }
 
 function showDepositSuccess(depositValue) {
@@ -437,19 +478,28 @@ document.addEventListener("click", (event) => {
     rechargeButton.disabled = true;
     rechargeNote.innerHTML = `Waiting for test callback: <strong>${selectedAmount}</strong>`;
 
-    window.setTimeout(() => {
-      updateWalletBalance(walletBalanceValue + depositValue);
-      rechargeButton.classList.remove("is-processing");
-      rechargeButton.classList.add("is-success");
-      rechargeButton.textContent = "Deposit Success";
-      rechargeNote.innerHTML = `Callback success: <strong>+${formatUsd(depositValue)}</strong> credited. Balance: <strong>${formatUsd(walletBalanceValue)}</strong>`;
-      showDepositSuccess(depositValue);
+    window.setTimeout(async () => {
+      try {
+        const result = await syncDepositSuccessToApi(depositValue);
+        const nextBalance = typeof result.balance === "number" ? result.balance : walletBalanceValue + depositValue;
+        updateWalletBalance(nextBalance);
+        rechargeButton.classList.remove("is-processing");
+        rechargeButton.classList.add("is-success");
+        rechargeButton.textContent = "Deposit Success";
+        rechargeNote.innerHTML = `API synced: <strong>+${formatUsd(depositValue)}</strong> credited. Balance: <strong>${formatUsd(walletBalanceValue)}</strong>`;
+        showDepositSuccess(depositValue);
 
-      window.setTimeout(() => {
-        rechargeButton.classList.remove("is-success");
-        rechargeButton.textContent = "Deposit Now";
+        window.setTimeout(() => {
+          rechargeButton.classList.remove("is-success");
+          rechargeButton.textContent = "Deposit Now";
+          rechargeButton.disabled = false;
+        }, 1400);
+      } catch (error) {
+        rechargeButton.classList.remove("is-processing");
+        rechargeButton.textContent = "Retry Deposit";
         rechargeButton.disabled = false;
-      }, 1400);
+        rechargeNote.innerHTML = `API sync failed: <strong>${error.message}</strong>. Please try again.`;
+      }
     }, 850);
   }
 });
@@ -483,6 +533,7 @@ function showPromoSlide(index) {
 }
 
 showActivityHeroSlide(0);
+syncWalletFromApi();
 
 attachSwipe(promoCarousel, () => showPromoSlide(activePromo + 1), () => showPromoSlide(activePromo - 1));
 attachSwipe(activityHero, () => showActivityHeroSlide(activeActivityHero + 1), () => showActivityHeroSlide(activeActivityHero - 1));
