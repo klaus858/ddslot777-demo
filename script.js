@@ -3,6 +3,11 @@ walletPolishStylesheet.rel = "stylesheet";
 walletPolishStylesheet.href = "wallet-polish.css?v=gift-popup-1";
 document.head.appendChild(walletPolishStylesheet);
 
+const premiumPolishStylesheet = document.createElement("link");
+premiumPolishStylesheet.rel = "stylesheet";
+premiumPolishStylesheet.href = "premium-polish.css?v=global-exact-nav-2";
+document.head.appendChild(premiumPolishStylesheet);
+
 const body = document.body;
 const modals = document.querySelectorAll(".modal-backdrop");
 const navButtons = document.querySelectorAll("[data-nav]");
@@ -14,6 +19,9 @@ const amountCards = document.querySelectorAll(".amount-card");
 const rechargeNote = document.querySelector("[data-recharge-note]");
 const homeBalance = document.querySelector("[data-home-balance]");
 const walletBalance = document.querySelector("[data-wallet-balance]");
+const activityBalance = document.querySelector("[data-activity-balance]");
+const walletTopBalance = document.querySelector("[data-wallet-top-balance]");
+const globalBalance = document.querySelector("[data-global-balance]");
 const depositSuccess = document.querySelector("[data-deposit-success]");
 const successAmount = document.querySelector("[data-success-amount]");
 const successBalance = document.querySelector("[data-success-balance]");
@@ -26,8 +34,36 @@ const detailRuleTwo = document.querySelector("[data-detail-rule-two]");
 const detailCta = document.querySelector("[data-detail-cta]");
 const promoSlides = Array.from(document.querySelectorAll(".promo-slide"));
 const promoDots = Array.from(document.querySelectorAll(".promo-dots span"));
+const promoCarousel = document.querySelector(".custom-hero-carousel");
+const activityHero = document.querySelector("[data-activity-hero-carousel]");
+const activityHeroTitle = document.querySelector("[data-activity-hero-title]");
+const activityHeroSubtitle = document.querySelector("[data-activity-hero-subtitle]");
+const activityHeroDetail = document.querySelector("[data-activity-hero-detail]");
+const activityHeroDots = Array.from(document.querySelectorAll("[data-activity-hero-dot]"));
 let walletBalanceValue = 0.5;
 let activePromo = 0;
+let activeActivityHero = 0;
+
+const activityHeroSlides = [
+  {
+    title: "FREE SPIN - EASY",
+    subtitle: "SPIN EASY $10 WIN!",
+    image: "assets/promo-5.webp",
+    detail: "free-spin",
+  },
+  {
+    title: "DEPOSIT BONUS",
+    subtitle: "UP TO 125% REWARDS",
+    image: "assets/promo-4.webp",
+    detail: "deposit",
+  },
+  {
+    title: "REFER & EARN",
+    subtitle: "INVITE FRIENDS. CLAIM REWARDS.",
+    image: "assets/promo-6.webp",
+    detail: "refer",
+  },
+];
 
 const activityDetails = {
   deposit: {
@@ -107,6 +143,9 @@ function updateWalletBalance(value) {
   walletBalanceValue = value;
   if (walletBalance) walletBalance.textContent = formatUsd(walletBalanceValue);
   if (homeBalance) homeBalance.textContent = formatUsd(walletBalanceValue);
+  if (activityBalance) activityBalance.textContent = formatUsd(walletBalanceValue);
+  if (walletTopBalance) walletTopBalance.textContent = formatUsd(walletBalanceValue);
+  if (globalBalance) globalBalance.textContent = formatUsd(walletBalanceValue);
 }
 
 function showDepositSuccess(depositValue) {
@@ -167,6 +206,15 @@ function closeActivity() {
   body.classList.remove("wallet-open");
 }
 
+function goHome() {
+  closeActivityDetail();
+  closeDepositSuccess();
+  closeWallet();
+  closeActivity();
+  closeModals();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 function openActivityDetail(detailKey) {
   const detail = activityDetails[detailKey] || activityDetails["free-spin"];
   if (detailKicker) detailKicker.textContent = detail.kicker;
@@ -199,6 +247,56 @@ function selectWalletTab(tabName) {
   });
 }
 
+function showActivityHeroSlide(index) {
+  if (!activityHero || !activityHeroSlides.length) return;
+
+  activeActivityHero = (index + activityHeroSlides.length) % activityHeroSlides.length;
+  const slide = activityHeroSlides[activeActivityHero];
+
+  activityHero.style.setProperty("--activity-hero-image", `url("${slide.image}")`);
+  if (activityHeroTitle) activityHeroTitle.textContent = slide.title;
+  if (activityHeroSubtitle) activityHeroSubtitle.textContent = slide.subtitle;
+  if (activityHeroDetail) activityHeroDetail.dataset.activityDetail = slide.detail;
+
+  activityHeroDots.forEach((dot, dotIndex) => {
+    const active = dotIndex === activeActivityHero;
+    dot.classList.toggle("active", active);
+    dot.setAttribute("aria-current", active ? "true" : "false");
+  });
+}
+
+function attachSwipe(element, onNext, onPrevious) {
+  if (!element) return;
+
+  let startX = 0;
+  let startY = 0;
+  let tracking = false;
+
+  element.addEventListener("pointerdown", (event) => {
+    if (event.target.closest("button, a, input, textarea, select")) return;
+    tracking = true;
+    startX = event.clientX;
+    startY = event.clientY;
+  });
+
+  element.addEventListener("pointerup", (event) => {
+    if (!tracking) return;
+    tracking = false;
+    const deltaX = event.clientX - startX;
+    const deltaY = event.clientY - startY;
+    if (Math.abs(deltaX) < 42 || Math.abs(deltaX) < Math.abs(deltaY) * 1.2) return;
+    if (deltaX < 0) {
+      onNext();
+    } else {
+      onPrevious();
+    }
+  });
+
+  element.addEventListener("pointercancel", () => {
+    tracking = false;
+  });
+}
+
 document.addEventListener("click", (event) => {
   const walletButton = event.target.closest("[data-open-wallet]");
   const closeWalletButton = event.target.closest("[data-close-wallet]");
@@ -215,6 +313,23 @@ document.addEventListener("click", (event) => {
   const amountCard = event.target.closest(".amount-card");
   const rechargeButton = event.target.closest("[data-recharge-submit]");
   const closeSuccessButton = event.target.closest("[data-close-success]");
+  const promoDot = event.target.closest(".promo-dots span");
+  const activityHeroDot = event.target.closest("[data-activity-hero-dot]");
+  const goHomeButton = event.target.closest("[data-go-home]");
+
+  if (goHomeButton) {
+    goHome();
+    return;
+  }
+
+  if (promoDot) {
+    const index = promoDots.indexOf(promoDot);
+    if (index >= 0) showPromoSlide(index);
+  }
+
+  if (activityHeroDot) {
+    showActivityHeroSlide(Number(activityHeroDot.dataset.activityHeroDot || 0));
+  }
 
   if (walletButton) {
     closeActivity();
@@ -314,6 +429,12 @@ document.addEventListener("click", (event) => {
 });
 
 document.addEventListener("keydown", (event) => {
+  if ((event.key === "Enter" || event.key === " ") && event.target.closest?.("[data-go-home]")) {
+    event.preventDefault();
+    goHome();
+    return;
+  }
+
   if (event.key === "Escape") {
     closeActivityDetail();
     closeDepositSuccess();
@@ -334,6 +455,11 @@ function showPromoSlide(index) {
     dot.classList.toggle("active", dotIndex === activePromo);
   });
 }
+
+showActivityHeroSlide(0);
+
+attachSwipe(promoCarousel, () => showPromoSlide(activePromo + 1), () => showPromoSlide(activePromo - 1));
+attachSwipe(activityHero, () => showActivityHeroSlide(activeActivityHero + 1), () => showActivityHeroSlide(activeActivityHero - 1));
 
 window.setInterval(() => {
   showPromoSlide(activePromo + 1);
