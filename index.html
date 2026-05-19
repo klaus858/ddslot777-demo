@@ -1,10 +1,10 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>大东slot Visual Mirror</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=auth-brand-1">
   </head>
   <body>
     <nav class="global-top-nav" aria-label="Global top navigation">
@@ -17,10 +17,12 @@
       </button>
       <span class="global-balance-cover" aria-hidden="true"></span>
       <span class="global-balance-value" data-global-balance aria-hidden="true">$0.50</span>
+      <button class="global-login-hit" type="button" data-open-modal="signin" data-auth-entry="login">Log In</button>
+      <button class="global-signup-hit" type="button" data-open-modal="signin" data-auth-entry="signup"><span>$3.00 Bonus</span>Sign Up</button>
       <button class="global-wallet-hit" type="button" data-open-wallet aria-label="Wallet"></button>
       <button class="global-gift-hit" type="button" data-open-activity aria-label="Bonus"></button>
       <button class="global-bell-hit" type="button" aria-label="Notifications"></button>
-      <button class="global-profile-hit" type="button" aria-label="Profile"></button>
+      <button class="global-profile-hit" type="button" data-auth-profile aria-label="Profile"></button>
     </nav>
 
     <nav class="global-bottom-nav" aria-label="Global bottom navigation">
@@ -399,21 +401,90 @@
       </div>
     </div>
 
-    <div class="modal-backdrop" data-modal="signin" aria-hidden="true">
-      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="signinTitle">
-        <button class="close-btn" type="button" data-close-modal aria-label="关闭">×</button>
-        <span class="modal-kicker">Demo account</span>
-        <h2 id="signinTitle">Join 大东slot</h2>
-        <p>这是展示版账号入口。后续可以接邮箱、手机号、KYC、地理位置验证和风控审核。</p>
-        <label>
-          Email
-          <input type="email" placeholder="demo@donggeslot.com">
-        </label>
-        <label>
-          Password
-          <input type="password" placeholder="Enter password">
-        </label>
-        <button class="modal-primary" type="button" data-close-modal>Enter Demo</button>
+    <div class="modal-backdrop auth-backdrop" data-modal="signin" aria-hidden="true">
+      <div class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="signinTitle">
+        <div class="auth-bg-glow" aria-hidden="true"></div>
+        <header class="auth-header">
+          <div class="auth-brand">
+            <span class="auth-logo" aria-hidden="true"></span>
+            <span class="auth-wordmark">
+              <strong>大东</strong>
+              <b>slot</b>
+            </span>
+          </div>
+          <button class="auth-close" type="button" data-close-modal aria-label="关闭">×</button>
+        </header>
+
+        <section class="auth-panel" aria-labelledby="signinTitle">
+          <div class="auth-tabs" role="tablist" aria-label="Auth mode">
+            <button class="auth-tab is-active" type="button" data-auth-mode="login" role="tab" aria-selected="true">Log In</button>
+            <button class="auth-tab" type="button" data-auth-mode="signup" role="tab" aria-selected="false">Sign Up</button>
+            <span class="auth-bonus">$3.00 Bonus</span>
+          </div>
+
+          <h2 id="signinTitle" class="auth-title">Log In</h2>
+
+          <div class="auth-methods" role="tablist" aria-label="Login method">
+            <button class="auth-method is-active" type="button" data-auth-method="phone" aria-selected="true">Phone Number</button>
+            <button class="auth-method" type="button" data-auth-method="email" aria-selected="false">Email</button>
+          </div>
+
+          <form class="auth-form" action="#" autocomplete="off" novalidate>
+            <label class="auth-field auth-phone-field" data-auth-field="phone">
+              <span>Phone Number</span>
+              <div class="auth-input auth-phone-input">
+                <button class="auth-country" type="button" aria-label="Country code">+1 <i></i></button>
+                <b aria-hidden="true"></b>
+                <input data-auth-phone type="tel" inputmode="tel" autocomplete="tel" placeholder="Phone Number">
+              </div>
+            </label>
+
+            <label class="auth-field auth-email-field" data-auth-field="email" hidden>
+              <span>Email</span>
+              <div class="auth-input">
+                <input data-auth-email type="email" autocomplete="email" placeholder="Email">
+              </div>
+            </label>
+
+            <label class="auth-field">
+              <span>Password</span>
+              <div class="auth-input">
+                <input data-auth-password type="password" autocomplete="new-password" placeholder="Password">
+                <button class="auth-eye" type="button" data-auth-toggle-password aria-label="Show password"></button>
+              </div>
+            </label>
+
+            <div class="auth-rules" data-auth-rules aria-live="polite">
+              <span data-rule="case">Upper & lower case</span>
+              <span data-rule="number">1 number</span>
+              <span data-rule="length">6+ characters</span>
+            </div>
+
+            <p class="auth-message" data-auth-message aria-live="polite"></p>
+
+            <div class="auth-row">
+              <label class="auth-check">
+                <input type="checkbox" checked>
+                <span></span>
+                Remember Me
+              </label>
+              <button class="auth-support" type="button">Contact Support</button>
+            </div>
+
+            <button class="auth-primary" type="submit" data-auth-submit>Log In</button>
+
+            <label class="auth-terms">
+              <input type="checkbox" checked>
+              <span></span>
+              <em>
+                I am at least 18 years old and agree to the
+                <a href="#">Terms of Use</a>
+                and
+                <a href="#">Privacy Policy</a>
+              </em>
+            </label>
+          </form>
+        </section>
       </div>
     </div>
 
