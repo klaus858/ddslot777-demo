@@ -5,8 +5,34 @@ document.head.appendChild(walletPolishStylesheet);
 
 const premiumPolishStylesheet = document.createElement("link");
 premiumPolishStylesheet.rel = "stylesheet";
-premiumPolishStylesheet.href = "premium-polish.css?v=global-exact-nav-3";
+premiumPolishStylesheet.href = "premium-polish.css?v=global-exact-nav-4";
 document.head.appendChild(premiumPolishStylesheet);
+
+const globalNavSingleFix = document.createElement("style");
+globalNavSingleFix.textContent = `
+  .phone-screen::before {
+    content: "";
+    position: absolute;
+    z-index: 20;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 7.35%;
+    background: linear-gradient(180deg, #020713 0%, #020713 86%, rgba(2, 7, 19, 0) 100%);
+    pointer-events: none;
+  }
+
+  .bottom-wallet-hotspot,
+  .bottom-bonus-hotspot,
+  .wallet-hotspot,
+  .logo-cover,
+  .xd-wordmark,
+  .home-balance-cover,
+  .home-balance-value {
+    display: none !important;
+  }
+`;
+document.head.appendChild(globalNavSingleFix);
 
 const body = document.body;
 const modals = document.querySelectorAll(".modal-backdrop");
