@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>大东slot Visual Mirror</title>
     <link rel="stylesheet" href="styles.css?v=auth-brand-1">
+    <link rel="stylesheet" href="wallet-polish.css?v=cleanup-1">
+    <link rel="stylesheet" href="premium-polish.css?v=local-auth-preview-2">
   </head>
   <body>
     <nav class="global-top-nav" aria-label="Global top navigation">
@@ -21,16 +23,16 @@
       <button class="global-signup-hit" type="button" data-open-modal="signin" data-auth-entry="signup"><span>$3.00 Bonus</span>Sign Up</button>
       <button class="global-wallet-hit" type="button" data-open-wallet aria-label="Wallet"></button>
       <button class="global-gift-hit" type="button" data-open-activity aria-label="Bonus"></button>
-      <button class="global-bell-hit" type="button" aria-label="Notifications"></button>
+      <button class="global-bell-hit" type="button" data-open-notifications aria-label="Notifications"></button>
       <button class="global-profile-hit" type="button" data-auth-profile aria-label="Profile"></button>
     </nav>
 
     <nav class="global-bottom-nav" aria-label="Global bottom navigation">
-      <button type="button" data-go-home aria-label="Menu"></button>
-      <button type="button" data-go-home aria-label="Casino"></button>
+      <button type="button" data-menu-preview aria-label="Menu"></button>
+      <button type="button" data-casino-preview aria-label="Casino"></button>
       <button type="button" data-open-wallet aria-label="Wallet"></button>
       <button type="button" data-open-activity aria-label="Bonus"></button>
-      <button type="button" data-go-home aria-label="Search"></button>
+      <button type="button" data-open-search aria-label="Search"></button>
     </nav>
 
     <main class="mirror-stage" aria-label="大东slot demo">
@@ -123,8 +125,8 @@
             <button type="button" data-open-wallet aria-label="Deposit">+</button>
           </div>
           <button class="activity-gift" type="button" data-activity-detail="deposit" aria-label="Bonus"><span>3</span></button>
-          <button class="activity-bell" type="button" aria-label="Notifications"><span>1</span></button>
-          <button class="activity-profile" type="button" aria-label="Profile"></button>
+          <button class="activity-bell" type="button" data-open-notifications aria-label="Notifications"><span>1</span></button>
+          <button class="activity-profile" type="button" data-auth-profile aria-label="Profile"></button>
         </header>
 
         <section class="activity-hero-card" data-activity-hero-carousel style="--activity-hero-image: url('assets/promo-5.webp')">
@@ -235,11 +237,11 @@
         </main>
 
         <nav class="activity-bottom-nav" aria-label="Activity navigation">
-          <button type="button" data-close-activity><span class="nav-home"></span>Menu</button>
-          <button type="button" data-close-activity><span class="nav-refer"></span>Casino</button>
+          <button type="button" data-menu-preview><span class="nav-home"></span>Menu</button>
+          <button type="button" data-casino-preview><span class="nav-refer"></span>Casino</button>
           <button class="nav-wallet-main" type="button" data-open-wallet><span></span>Wallet</button>
           <button class="active" type="button"><span class="nav-gift"></span>Bonus</button>
-          <button type="button" data-close-activity><span class="nav-me"></span>Search</button>
+          <button type="button" data-open-search><span class="nav-me"></span>Search</button>
         </nav>
       </div>
     </section>
@@ -257,8 +259,8 @@
             <button type="button" data-open-wallet aria-label="Deposit">+</button>
           </div>
           <button class="activity-gift" type="button" data-activity-detail="deposit" aria-label="Bonus"><span>3</span></button>
-          <button class="activity-bell" type="button" aria-label="Notifications"><span>1</span></button>
-          <button class="activity-profile" type="button" aria-label="Profile"></button>
+          <button class="activity-bell" type="button" data-open-notifications aria-label="Notifications"><span>1</span></button>
+          <button class="activity-profile" type="button" data-auth-profile aria-label="Profile"></button>
         </header>
 
         <header class="wallet-header">
@@ -267,11 +269,11 @@
           </button>
           <h1>Wallet</h1>
           <div class="wallet-actions">
-            <button class="history-btn" type="button">
+            <button class="history-btn" type="button" data-wallet-history>
               <span class="history-icon"></span>
               History
             </button>
-            <button class="support-btn" type="button" aria-label="客服">
+            <button class="support-btn" type="button" data-contact-support aria-label="客服">
               <span></span>
             </button>
           </div>
@@ -367,14 +369,36 @@
         </div>
 
         <nav class="activity-bottom-nav wallet-bottom-nav" aria-label="Wallet navigation">
-          <button type="button" data-close-wallet><span class="nav-home"></span>Menu</button>
-          <button type="button" data-close-wallet><span class="nav-refer"></span>Casino</button>
+          <button type="button" data-menu-preview><span class="nav-home"></span>Menu</button>
+          <button type="button" data-casino-preview><span class="nav-refer"></span>Casino</button>
           <button class="nav-wallet-main active" type="button"><span></span>Wallet</button>
           <button type="button" data-open-activity><span class="nav-gift"></span>Bonus</button>
-          <button type="button" data-close-wallet><span class="nav-me"></span>Search</button>
+          <button type="button" data-open-search><span class="nav-me"></span>Search</button>
         </nav>
       </div>
     </section>
+
+    <div class="profile-panel" data-profile-panel aria-hidden="true">
+      <div class="profile-card" role="dialog" aria-modal="true" aria-labelledby="profilePanelTitle">
+        <button class="profile-close" type="button" data-close-profile aria-label="Close">×</button>
+        <span class="profile-kicker">Player account</span>
+        <h2 id="profilePanelTitle">Demo Player</h2>
+        <div class="profile-balance">
+          <span>Available balance</span>
+          <strong data-profile-balance>$0.50</strong>
+        </div>
+        <div class="profile-actions">
+          <button type="button" data-open-wallet>Wallet</button>
+          <button type="button" data-open-activity>Bonus</button>
+          <button type="button" data-open-notifications>Alerts</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-toast" data-app-toast aria-live="polite" aria-hidden="true">
+      <strong data-toast-title>Ready</strong>
+      <span data-toast-message>Action completed.</span>
+    </div>
 
     <div class="deposit-success" data-deposit-success aria-hidden="true">
       <div class="deposit-success-card" role="dialog" aria-modal="true" aria-labelledby="depositSuccessTitle">
@@ -485,33 +509,6 @@
             </label>
           </form>
         </section>
-      </div>
-    </div>
-
-    <div class="modal-backdrop" data-modal="wallet" aria-hidden="true">
-      <div class="modal wallet-modal" role="dialog" aria-modal="true" aria-labelledby="walletTitle">
-        <button class="close-btn" type="button" data-close-modal aria-label="关闭">×</button>
-        <span class="modal-kicker">Wallet preview</span>
-        <h2 id="walletTitle">Demo Wallet</h2>
-        <div class="wallet-balance">
-          <span>Available balance</span>
-          <strong>$0.50</strong>
-        </div>
-        <div class="wallet-grid">
-          <button type="button" disabled>Deposit</button>
-          <button type="button" disabled>Withdraw</button>
-        </div>
-        <p>真钱版本需要接支付、KYC、AML、地理围栏和审计日志。当前只做视觉展示。</p>
-      </div>
-    </div>
-
-    <div class="modal-backdrop" data-modal="bonus" aria-hidden="true">
-      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="bonusTitle">
-        <button class="close-btn" type="button" data-close-modal aria-label="关闭">×</button>
-        <span class="modal-kicker">Cashback</span>
-        <h2 id="bonusTitle">Bonus Center</h2>
-        <p>这里可以扩展成活动后台配置：返利比例、流水要求、有效期、目标用户分层和预算上限。</p>
-        <button class="modal-primary" type="button" data-close-modal>Got it</button>
       </div>
     </div>
 

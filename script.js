@@ -1,47 +1,10 @@
-const walletPolishStylesheet = document.createElement("link");
-walletPolishStylesheet.rel = "stylesheet";
-walletPolishStylesheet.href = "wallet-polish.css?v=gift-popup-1";
-document.head.appendChild(walletPolishStylesheet);
-
 const API_BASE = new URLSearchParams(window.location.search).get("api") === "local"
   ? "http://127.0.0.1:8080"
   : "https://ddslot777-api.vercel.app";
 const AUTH_STORAGE_KEY = "ddslot-auth-session";
 
-const premiumPolishStylesheet = document.createElement("link");
-premiumPolishStylesheet.rel = "stylesheet";
-premiumPolishStylesheet.href = "premium-polish.css?v=local-auth-preview-2";
-document.head.appendChild(premiumPolishStylesheet);
-
-const globalNavSingleFix = document.createElement("style");
-globalNavSingleFix.textContent = `
-  .phone-screen::before {
-    content: "";
-    position: absolute;
-    z-index: 20;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 7.35%;
-    background: linear-gradient(180deg, #020713 0%, #020713 86%, rgba(2, 7, 19, 0) 100%);
-    pointer-events: none;
-  }
-
-  .bottom-wallet-hotspot,
-  .bottom-bonus-hotspot,
-  .wallet-hotspot,
-  .logo-cover,
-  .xd-wordmark,
-  .home-balance-cover,
-  .home-balance-value {
-    display: none !important;
-  }
-`;
-document.head.appendChild(globalNavSingleFix);
-
 const body = document.body;
 const modals = document.querySelectorAll(".modal-backdrop");
-const navButtons = document.querySelectorAll("[data-nav]");
 const walletPage = document.querySelector("#walletPage");
 const activityPage = document.querySelector("#activityPage");
 const walletTabs = document.querySelectorAll("[data-wallet-tab]");
@@ -53,9 +16,14 @@ const walletBalance = document.querySelector("[data-wallet-balance]");
 const activityBalance = document.querySelector("[data-activity-balance]");
 const walletTopBalance = document.querySelector("[data-wallet-top-balance]");
 const globalBalance = document.querySelector("[data-global-balance]");
+const profileBalance = document.querySelector("[data-profile-balance]");
 const depositSuccess = document.querySelector("[data-deposit-success]");
 const successAmount = document.querySelector("[data-success-amount]");
 const successBalance = document.querySelector("[data-success-balance]");
+const profilePanel = document.querySelector("[data-profile-panel]");
+const appToast = document.querySelector("[data-app-toast]");
+const toastTitle = document.querySelector("[data-toast-title]");
+const toastMessage = document.querySelector("[data-toast-message]");
 const activityDetailModal = document.querySelector("[data-activity-detail-modal]");
 const detailKicker = document.querySelector("[data-detail-kicker]");
 const detailTitle = document.querySelector("[data-detail-title]");
@@ -198,6 +166,7 @@ function updateWalletBalance(value) {
   if (activityBalance) activityBalance.textContent = formatUsd(walletBalanceValue);
   if (walletTopBalance) walletTopBalance.textContent = formatUsd(walletBalanceValue);
   if (globalBalance && isAuthenticated) globalBalance.textContent = formatUsd(walletBalanceValue);
+  if (profileBalance) profileBalance.textContent = formatUsd(walletBalanceValue);
 }
 
 function readAuthSession() {
@@ -367,6 +336,36 @@ function closeDepositSuccess() {
   depositSuccess?.setAttribute("aria-hidden", "true");
 }
 
+function showToast(title, message) {
+  if (!appToast) return;
+  window.clearTimeout(showToast.timeoutId);
+  if (toastTitle) toastTitle.textContent = title;
+  if (toastMessage) toastMessage.textContent = message;
+  appToast.classList.add("is-visible");
+  appToast.setAttribute("aria-hidden", "false");
+  showToast.timeoutId = window.setTimeout(() => {
+    appToast.classList.remove("is-visible");
+    appToast.setAttribute("aria-hidden", "true");
+  }, 2600);
+}
+
+function openProfilePanel() {
+  if (!isAuthenticated) {
+    setAuthMode("login");
+    openModal("signin");
+    return;
+  }
+  closeModals();
+  closeActivityDetail();
+  profilePanel?.classList.add("is-open");
+  profilePanel?.setAttribute("aria-hidden", "false");
+}
+
+function closeProfilePanel() {
+  profilePanel?.classList.remove("is-open");
+  profilePanel?.setAttribute("aria-hidden", "true");
+}
+
 function setAuthMode(mode) {
   authMode = mode;
   setAuthMessage("");
@@ -406,6 +405,7 @@ function updatePasswordRules() {
 function openModal(name) {
   const modal = document.querySelector(`[data-modal="${name}"]`);
   if (!modal) return;
+  closeProfilePanel();
 
   if (name === "signin" && authPassword) {
     authPassword.value = "";
@@ -431,6 +431,7 @@ function closeModals() {
 
 function openWallet() {
   closeModals();
+  closeProfilePanel();
   walletPage?.classList.add("is-open");
   walletPage?.setAttribute("aria-hidden", "false");
   body.classList.add("wallet-open");
@@ -445,6 +446,7 @@ function closeWallet() {
 
 function openActivity() {
   closeModals();
+  closeProfilePanel();
   closeWallet();
   activityPage?.classList.add("is-open");
   activityPage?.setAttribute("aria-hidden", "false");
@@ -461,6 +463,7 @@ function closeActivity() {
 function goHome() {
   closeActivityDetail();
   closeDepositSuccess();
+  closeProfilePanel();
   closeWallet();
   closeActivity();
   closeModals();
@@ -496,6 +499,14 @@ function selectWalletTab(tabName) {
 
   walletPanels.forEach((panel) => {
     panel.classList.toggle("active", panel.dataset.walletPanel === tabName);
+  });
+}
+
+function selectStep(step) {
+  const group = step.closest(".bonus-steps, .activity-bonus-steps");
+  if (!group) return;
+  group.querySelectorAll(".bonus-step, .activity-bonus-step").forEach((item) => {
+    item.classList.toggle("active", item === step);
   });
 }
 
@@ -560,7 +571,6 @@ document.addEventListener("click", (event) => {
   const openButton = event.target.closest("[data-open-modal]");
   const closeButton = event.target.closest("[data-close-modal]");
   const scrollButton = event.target.closest("[data-scroll-target]");
-  const navButton = event.target.closest("[data-nav]");
   const walletTab = event.target.closest("[data-wallet-tab]");
   const amountCard = event.target.closest(".amount-card");
   const rechargeButton = event.target.closest("[data-recharge-submit]");
@@ -573,6 +583,14 @@ document.addEventListener("click", (event) => {
   const authPasswordButton = event.target.closest("[data-auth-toggle-password]");
   const authEntryButton = event.target.closest("[data-auth-entry]");
   const authProfileButton = event.target.closest("[data-auth-profile]");
+  const closeProfileButton = event.target.closest("[data-close-profile]");
+  const notificationsButton = event.target.closest("[data-open-notifications]");
+  const searchButton = event.target.closest("[data-open-search]");
+  const menuPreviewButton = event.target.closest("[data-menu-preview]");
+  const casinoPreviewButton = event.target.closest("[data-casino-preview]");
+  const walletHistoryButton = event.target.closest("[data-wallet-history]");
+  const supportButton = event.target.closest("[data-contact-support]");
+  const bonusStep = event.target.closest(".bonus-step, .activity-bonus-step");
 
   if (goHomeButton) {
     goHome();
@@ -598,9 +616,50 @@ document.addEventListener("click", (event) => {
     authPasswordButton.setAttribute("aria-label", showPassword ? "Hide password" : "Show password");
   }
 
-  if (authProfileButton && !isAuthenticated) {
-    setAuthMode("login");
-    openModal("signin");
+  if (authProfileButton) {
+    openProfilePanel();
+    return;
+  }
+
+  if (closeProfileButton || event.target === profilePanel) {
+    closeProfilePanel();
+    return;
+  }
+
+  if (notificationsButton) {
+    showToast("Notifications", "You have 1 bonus reminder and no urgent wallet alerts.");
+    return;
+  }
+
+  if (searchButton) {
+    showToast("Search", "Search is ready for the next game-provider catalog.");
+    return;
+  }
+
+  if (menuPreviewButton) {
+    goHome();
+    showToast("Menu", "Home lobby restored. Full side menu can be added next.");
+    return;
+  }
+
+  if (casinoPreviewButton) {
+    goHome();
+    showToast("Casino", "Casino lobby is the next best section to build out.");
+    return;
+  }
+
+  if (walletHistoryButton) {
+    showToast("Wallet history", "Deposit records are syncing through the API for admin review.");
+    return;
+  }
+
+  if (supportButton) {
+    showToast("Support", "Live chat placeholder ready. Add WhatsApp/Telegram link next.");
+    return;
+  }
+
+  if (bonusStep) {
+    selectStep(bonusStep);
     return;
   }
 
@@ -656,6 +715,11 @@ document.addEventListener("click", (event) => {
   }
 
   if (openButton) {
+    if (isAuthenticated && openButton.dataset.openModal === "signin") {
+      openActivity();
+      showToast("Bonus center", "You are already signed in. Bonus offers are open.");
+      return;
+    }
     openModal(openButton.dataset.openModal);
   }
 
@@ -669,11 +733,6 @@ document.addEventListener("click", (event) => {
 
   if (scrollButton) {
     document.querySelector(scrollButton.dataset.scrollTarget)?.scrollIntoView({ behavior: "smooth" });
-  }
-
-  if (navButton) {
-    navButtons.forEach((button) => button.classList.remove("active"));
-    navButton.classList.add("active");
   }
 
   if (walletTab) {
@@ -746,6 +805,7 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     closeActivityDetail();
     closeDepositSuccess();
+    closeProfilePanel();
     closeWallet();
     closeActivity();
     closeModals();

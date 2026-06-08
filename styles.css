@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --screen-w: 941;
   --screen-h: 1672;
   --ink: #f7fbff;
@@ -1622,7 +1622,7 @@ body.is-authenticated .global-signup-hit {
 }
 
 .bonus-step.active::after {
-  content: "鉁?;
+  content: "✓";
   position: absolute;
   right: 0;
   bottom: 0;
@@ -2614,3 +2614,183 @@ body.is-authenticated .global-signup-hit {
   }
 }
 
+.app-toast {
+  position: fixed;
+  z-index: 1300;
+  left: 50%;
+  bottom: calc(92px + env(safe-area-inset-bottom));
+  width: min(420px, calc(100vw - 32px));
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 216, 112, 0.28);
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(28, 36, 50, 0.96), rgba(8, 13, 24, 0.96)),
+    rgba(8, 13, 24, 0.96);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  color: #f9fbff;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 18px) scale(0.98);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.app-toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
+.app-toast strong {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffe28a;
+}
+
+.app-toast span {
+  font-size: 14px;
+  line-height: 1.35;
+  color: rgba(246, 249, 255, 0.82);
+}
+
+.profile-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 1250;
+  display: grid;
+  place-items: end center;
+  padding: 24px 16px calc(92px + env(safe-area-inset-bottom));
+  background: rgba(3, 7, 15, 0);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease, background 180ms ease;
+}
+
+.profile-panel.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  background: rgba(3, 7, 15, 0.48);
+}
+
+.profile-card {
+  position: relative;
+  width: min(440px, 100%);
+  padding: 22px;
+  border: 1px solid rgba(255, 216, 112, 0.28);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 16% 0%, rgba(255, 216, 112, 0.18), transparent 38%),
+    linear-gradient(145deg, rgba(21, 29, 45, 0.98), rgba(7, 12, 24, 0.98));
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: #f9fbff;
+  transform: translateY(22px);
+  transition: transform 180ms ease;
+}
+
+.profile-panel.is-open .profile-card {
+  transform: translateY(0);
+}
+
+.profile-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 22px;
+  line-height: 1;
+}
+
+.profile-kicker {
+  display: block;
+  margin-bottom: 8px;
+  color: #ffe28a;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.profile-card h2 {
+  margin: 0 0 18px;
+  font-size: 26px;
+  line-height: 1.05;
+}
+
+.profile-balance {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.profile-balance span {
+  color: rgba(246, 249, 255, 0.66);
+  font-size: 13px;
+}
+
+.profile-balance strong {
+  color: #ffe28a;
+  font-size: 22px;
+}
+
+.profile-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.profile-actions button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffe58e, #d89c25);
+  color: #201407;
+  font-weight: 900;
+  box-shadow: 0 10px 24px rgba(216, 156, 37, 0.24);
+}
+
+.global-bottom-nav button:active,
+.global-top-nav button:active,
+.activity-bottom-nav button:active,
+.wallet-actions button:active,
+.profile-actions button:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.bonus-step,
+.activity-bonus-step,
+.amount-card,
+.activity-slider-dots button,
+.promo-dots span {
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.bonus-step:focus-visible,
+.activity-bonus-step:focus-visible,
+.amount-card:focus-visible,
+.global-top-nav button:focus-visible,
+.global-bottom-nav button:focus-visible,
+.activity-bottom-nav button:focus-visible,
+.wallet-actions button:focus-visible {
+  outline: 2px solid rgba(255, 226, 138, 0.88);
+  outline-offset: 3px;
+}
+
+.bonus-step:not(.active):hover,
+.activity-bonus-step:not(.active):hover,
+.amount-card:not(.selected):hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 226, 138, 0.38);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+}
