@@ -1955,14 +1955,101 @@ body:not(.is-authenticated) .global-profile-hit::after {
   padding-bottom: calc(var(--fixed-bottom-nav-height) + 24px + env(safe-area-inset-bottom)) !important;
 }
 
-@media (max-width: 941px) {
+@media (max-width: 941px), (pointer: coarse) {
+  :root {
+    --fixed-bottom-nav-height: 82px;
+    --fixed-bottom-nav-inset: 0px;
+  }
+
   .global-bottom-nav,
   .activity-bottom-nav,
   .wallet-bottom-nav {
     left: 0 !important;
     right: 0 !important;
     width: auto !important;
+    max-width: 100% !important;
     border-radius: 16px 16px 0 0 !important;
     transform: translateZ(0) !important;
+  }
+
+  .global-bottom-nav {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    align-items: center !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(72, 132, 255, 0.38) !important;
+    border-bottom: 0 !important;
+    background:
+      radial-gradient(circle at 50% 0, rgba(29, 126, 255, 0.32), transparent 44%),
+      linear-gradient(90deg, rgba(8, 24, 55, 0.98), rgba(4, 13, 31, 0.98) 46%, rgba(15, 12, 48, 0.98)) !important;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(105, 181, 255, 0.28) !important;
+  }
+
+  .global-bottom-nav button,
+  .global-bottom-nav button:nth-child(1),
+  .global-bottom-nav button:nth-child(2),
+  .global-bottom-nav button:nth-child(3),
+  .global-bottom-nav button:nth-child(4),
+  .global-bottom-nav button:nth-child(5) {
+    position: relative !important;
+    width: 100% !important;
+    height: var(--fixed-bottom-nav-height) !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    color: rgba(219, 227, 247, 0.72) !important;
+    font: 500 13px/1 Inter, "SF Pro Display", ui-sans-serif, system-ui, sans-serif !important;
+  }
+
+  .global-bottom-nav button::before {
+    display: block;
+    height: 28px;
+    color: rgba(221, 229, 249, 0.76);
+    font-size: 28px;
+    line-height: 28px;
+    text-align: center;
+    text-shadow: 0 0 14px rgba(92, 160, 255, 0.24);
+  }
+
+  .global-bottom-nav button::after {
+    content: attr(aria-label);
+    display: block;
+  }
+
+  .global-bottom-nav button:nth-child(1)::before {
+    content: "\2630";
+  }
+
+  .global-bottom-nav button:nth-child(2)::before {
+    content: "\2660";
+  }
+
+  .global-bottom-nav button:nth-child(3)::before {
+    content: "\25AD";
+    width: 72px;
+    height: 54px;
+    margin-top: -3px;
+    border: 1px solid rgba(85, 229, 255, 0.62);
+    border-radius: 18px;
+    background: linear-gradient(135deg, #075dff 0%, #0a95ff 62%, #18c8ff 100%);
+    color: #fff;
+    font-size: 30px;
+    line-height: 50px;
+    box-shadow: 0 10px 24px rgba(0, 101, 255, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.26);
+  }
+
+  .global-bottom-nav button:nth-child(3)::after {
+    content: "";
+  }
+
+  .global-bottom-nav button:nth-child(4)::before {
+    content: "\2733";
+  }
+
+  .global-bottom-nav button:nth-child(5)::before {
+    content: "\2315";
   }
 }
