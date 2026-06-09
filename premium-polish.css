@@ -1878,25 +1878,30 @@ body:not(.is-authenticated) .global-profile-hit::after {
 }
 
 /* Mobile viewport stability: keep bottom navigation locked to the screen edge. */
+:root {
+  --fixed-bottom-nav-height: 118px;
+  --fixed-bottom-nav-inset: 24px;
+}
+
 .global-bottom-nav {
   position: fixed !important;
   z-index: 1000 !important;
-  left: 0 !important;
-  right: 0 !important;
+  left: 50% !important;
+  right: auto !important;
   bottom: 0 !important;
-  width: auto !important;
-  height: 64px !important;
-  min-height: 64px !important;
-  max-height: 64px !important;
+  width: min(calc(100% - (var(--fixed-bottom-nav-inset) * 2)), 912px) !important;
+  height: var(--fixed-bottom-nav-height) !important;
+  min-height: var(--fixed-bottom-nav-height) !important;
+  max-height: var(--fixed-bottom-nav-height) !important;
   padding: 0 0 env(safe-area-inset-bottom) !important;
   box-sizing: content-box !important;
   display: flex !important;
   align-items: stretch !important;
   justify-content: space-around !important;
   overflow: hidden !important;
-  border-radius: 0 !important;
+  border-radius: 16px 16px 0 0 !important;
   background: url("assets/xd-reference.png") center bottom / 103.18% auto no-repeat !important;
-  transform: translateZ(0) !important;
+  transform: translateX(-50%) translateZ(0) !important;
   pointer-events: auto !important;
   will-change: transform;
 }
@@ -1916,7 +1921,7 @@ body:not(.is-authenticated) .global-profile-hit::after {
   left: auto !important;
   top: auto !important;
   width: auto !important;
-  height: 64px !important;
+  height: var(--fixed-bottom-nav-height) !important;
   flex: 1 1 20% !important;
   display: block !important;
   padding: 0 !important;
@@ -1927,21 +1932,37 @@ body:not(.is-authenticated) .global-profile-hit::after {
 
 .activity-bottom-nav,
 .wallet-bottom-nav {
-  left: 0 !important;
-  right: 0 !important;
+  left: 50% !important;
+  right: auto !important;
   bottom: 0 !important;
-  width: auto !important;
-  height: 64px !important;
-  min-height: 64px !important;
-  max-height: 64px !important;
+  width: min(calc(100% - (var(--fixed-bottom-nav-inset) * 2)), 912px) !important;
+  height: var(--fixed-bottom-nav-height) !important;
+  min-height: var(--fixed-bottom-nav-height) !important;
+  max-height: var(--fixed-bottom-nav-height) !important;
   padding: 0 0 env(safe-area-inset-bottom) !important;
   box-sizing: content-box !important;
-  border-radius: 0 !important;
-  transform: translateZ(0) !important;
+  border-radius: 16px 16px 0 0 !important;
+  transform: translateX(-50%) translateZ(0) !important;
   will-change: transform;
 }
 
 .activity-shell,
 .wallet-shell {
-  padding-bottom: calc(64px + 24px + env(safe-area-inset-bottom)) !important;
+  padding-bottom: calc(var(--fixed-bottom-nav-height) + 24px + env(safe-area-inset-bottom)) !important;
+}
+
+.mirror-stage {
+  padding-bottom: calc(var(--fixed-bottom-nav-height) + 24px + env(safe-area-inset-bottom)) !important;
+}
+
+@media (max-width: 941px) {
+  .global-bottom-nav,
+  .activity-bottom-nav,
+  .wallet-bottom-nav {
+    left: 0 !important;
+    right: 0 !important;
+    width: auto !important;
+    border-radius: 16px 16px 0 0 !important;
+    transform: translateZ(0) !important;
+  }
 }
