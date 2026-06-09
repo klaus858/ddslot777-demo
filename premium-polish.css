@@ -1876,3 +1876,72 @@ body:not(.is-authenticated) .global-profile-hit::after {
   border-bottom: 0;
   transform: translateX(-50%);
 }
+
+/* Mobile viewport stability: keep bottom navigation locked to the screen edge. */
+.global-bottom-nav {
+  position: fixed !important;
+  z-index: 1000 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: auto !important;
+  height: 64px !important;
+  min-height: 64px !important;
+  max-height: 64px !important;
+  padding: 0 0 env(safe-area-inset-bottom) !important;
+  box-sizing: content-box !important;
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: space-around !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+  background: url("assets/xd-reference.png") center bottom / 103.18% auto no-repeat !important;
+  transform: translateZ(0) !important;
+  pointer-events: auto !important;
+  will-change: transform;
+}
+
+.global-bottom-nav::before {
+  content: none !important;
+}
+
+.global-bottom-nav button,
+.global-bottom-nav button:nth-child(1),
+.global-bottom-nav button:nth-child(2),
+.global-bottom-nav button:nth-child(3),
+.global-bottom-nav button:nth-child(4),
+.global-bottom-nav button:nth-child(5) {
+  position: relative !important;
+  inset: auto !important;
+  left: auto !important;
+  top: auto !important;
+  width: auto !important;
+  height: 64px !important;
+  flex: 1 1 20% !important;
+  display: block !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  pointer-events: auto !important;
+}
+
+.activity-bottom-nav,
+.wallet-bottom-nav {
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: auto !important;
+  height: 64px !important;
+  min-height: 64px !important;
+  max-height: 64px !important;
+  padding: 0 0 env(safe-area-inset-bottom) !important;
+  box-sizing: content-box !important;
+  border-radius: 0 !important;
+  transform: translateZ(0) !important;
+  will-change: transform;
+}
+
+.activity-shell,
+.wallet-shell {
+  padding-bottom: calc(64px + 24px + env(safe-area-inset-bottom)) !important;
+}
